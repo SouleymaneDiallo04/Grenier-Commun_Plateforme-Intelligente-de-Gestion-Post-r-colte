@@ -14,7 +14,7 @@
 
 ## Le problème : trois injustices qui se répètent chaque saison
 
-Au Sénégal, l'agriculture emploie plus de **60 % de la population active**. Pourtant, saison après saison, des millions de petits agriculteurs subissent les mêmes trois injustices — non pas par manque de travail, mais par manque d'infrastructure, de financement et d'information.
+Au Sénégal, l'agriculture emploie plus de **22 % de la population active**. Pourtant, saison après saison, des millions de petits agriculteurs subissent les mêmes trois injustices non pas par manque de travail, mais par manque d'infrastructure, de financement et d'information.
 
 ### 1. La trappe du vendeur contraint
 
