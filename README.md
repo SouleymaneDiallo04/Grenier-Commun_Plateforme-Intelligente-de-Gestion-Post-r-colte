@@ -36,7 +36,7 @@ Le petit agriculteur n'a pas accès au crédit bancaire classique. Il n'a pas de
 
 **Grenier Commun** est la première plateforme intégrée d'Afrique de l'Ouest qui résout ces trois problèmes simultanément, dans un seul produit numérique.
 
-> *Stocker mieux. Financer plus vite. Vendre au bon moment.*
+> ***Stocker mieux. Financer plus vite. Vendre au bon moment.***
 
 La plateforme repose sur un réseau de **silos physiques connectés** déployés dans les communes rurales sénégalaises, pilotés par une interface web multi-acteurs accessible en **quatre langues** — dont le Wolof, la langue nationale parlée par plus de 80 % des Sénégalais.
 
