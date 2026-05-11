@@ -67,6 +67,7 @@ services:
     name: grenier-commun-redis
     plan: free
     maxmemoryPolicy: noeviction
+    ipAllowList: []
 
 databases:
   - name: grenier-commun-db
