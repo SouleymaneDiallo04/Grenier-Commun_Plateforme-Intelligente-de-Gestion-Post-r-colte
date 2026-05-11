@@ -62,10 +62,13 @@ services:
       - key: HUGGINGFACE_API_KEY
         sync: false
 
+  # ─── Redis ────────────────────────────────────────────────────────────────────
+  - type: redis
+    name: grenier-commun-redis
+    plan: free
+    maxmemoryPolicy: noeviction
+
 databases:
   - name: grenier-commun-db
     databaseName: grenier_commun
     user: gc_user
-
-  - name: grenier-commun-redis
-    type: redis
