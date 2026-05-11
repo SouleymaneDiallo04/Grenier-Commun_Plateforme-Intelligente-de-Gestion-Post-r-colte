@@ -8,7 +8,7 @@
   <img src="https://img.shields.io/badge/Claude_API-Chatbot_IA-7C3AED?style=for-the-badge&logo=anthropic&logoColor=white"/>
   <img src="https://img.shields.io/badge/Meta_NLLB--200-IA_Wolof-0082C9?style=for-the-badge&logo=meta&logoColor=white"/>
   <img src="https://img.shields.io/badge/Langues-FR_·_EN_·_AR_·_WO-1A6B3A?style=for-the-badge"/>
-  <img src="https://img.shields.io/badge/Déploiement-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Déploiement-Railway-46E3B7?style=for-the-badge&logo=render&logoColor=white"/>
 </p>
 
 ---
