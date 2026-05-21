@@ -10,3 +10,16 @@ venv/
 node_modules/
 .DS_Store
 *.log
+
+# LaTeX generated files
+*.pdf
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.lof
+*.lot
+*.out
+*.run.xml
+*.toc
+*.synctex*

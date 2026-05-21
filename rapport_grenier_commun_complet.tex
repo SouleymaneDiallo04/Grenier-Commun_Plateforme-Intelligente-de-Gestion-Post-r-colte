@@ -1,0 +1,2852 @@
+% ============================================================
+%  GRENIER COMMUN — Rapport scientifique complet (fichier unique)
+%  Compilation :
+%    pdflatex rapport_grenier_commun_complet
+%    biber    rapport_grenier_commun_complet
+%    pdflatex rapport_grenier_commun_complet
+%    pdflatex rapport_grenier_commun_complet
+% ============================================================
+
+\documentclass[12pt,a4paper,twoside]{report}
+
+% ── Encodage & Langue ─────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage[french]{babel}
+
+% ── Mise en page ──────────────────────────────────────────────
+\usepackage[top=2.5cm,bottom=2.5cm,left=3cm,right=2.5cm]{geometry}
+\usepackage{setspace}
+\setstretch{1.15}
+\raggedbottom
+
+% ── Polices ───────────────────────────────────────────────────
+\usepackage{lmodern}
+\usepackage{microtype}
+
+% ── Graphiques & Couleurs ────────────────────────────────────
+\usepackage{graphicx}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,arrows.meta,positioning,calc,fit,
+                decorations.pathreplacing,mindmap,trees,shadows,
+                backgrounds,patterns,shapes.geometric,matrix}
+
+% ── Couleurs du projet ───────────────────────────────────────
+\definecolor{gcvert}{RGB}{40,120,80}
+\definecolor{gcor}{RGB}{200,150,30}
+\definecolor{gcgris}{RGB}{80,80,90}
+\definecolor{codegreen}{rgb}{0.13,0.55,0.13}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codeblue}{rgb}{0.0,0.35,0.75}
+\definecolor{codeorange}{rgb}{0.85,0.40,0.0}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+\definecolor{colsoumis}{RGB}{100,149,237}
+\definecolor{colapprouve}{RGB}{40,160,80}
+\definecolor{colrefuse}{RGB}{200,60,60}
+\definecolor{coldefaut}{RGB}{180,60,180}
+
+% ── En-têtes & Pieds de page ─────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\small\thepage}
+\fancyhead[RE]{\small\nouppercase{\leftmark}}
+\fancyhead[LO]{\small\nouppercase{\rightmark}}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}}
+
+% ── Titres ───────────────────────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{gcvert}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{0pt}{14pt}
+\titleformat{\section}{\large\bfseries\color{gcvert!80!black}}{\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{10pt plus 2pt minus 1pt}{3pt}
+\titleformat{\subsection}{\normalsize\bfseries\color{gcgris}}{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{7pt plus 1pt minus 1pt}{2pt}
+\titlespacing*{\paragraph}{0pt}{5pt}{0.8em}
+
+% ── Table des matières ───────────────────────────────────────
+\usepackage{tocloft}
+\renewcommand{\cftchapfont}{\bfseries}
+\setlength{\cftbeforechapskip}{4pt}
+
+% ── Tableaux ─────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+
+% ── Listes ───────────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep,topsep=3pt}
+\setlist[enumerate]{noitemsep,topsep=3pt}
+
+% ── Flottants ────────────────────────────────────────────────
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup{font=small,labelfont=bf}
+
+% ── Code source ──────────────────────────────────────────────
+\usepackage{listings}
+
+\lstdefinestyle{pythonstyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen}\itshape,
+  keywordstyle=\color{gcvert}\bfseries,
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codeorange},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2,
+  frame=single,
+  rulecolor=\color{gcvert!40},
+  language=Python
+}
+
+\lstdefinestyle{bashstyle}{
+  backgroundcolor=\color{black!88},
+  basicstyle=\ttfamily\footnotesize\color{white},
+  breaklines=true,
+  frame=none,
+  numbers=none
+}
+
+\lstdefinestyle{htmlstyle}{
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegray}\itshape,
+  keywordstyle=\color{codeblue}\bfseries,
+  stringstyle=\color{codeorange},
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  frame=single,
+  rulecolor=\color{codeblue!40},
+  language=HTML
+}
+
+% ── Maths & Algorithmes ──────────────────────────────────────
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% ── Boîtes ───────────────────────────────────────────────────
+\usepackage{mdframed}
+\usepackage{tcolorbox}
+\tcbuselibrary{most}
+
+\newtcolorbox{definitionbox}[1][]{
+  colback=gcvert!8, colframe=gcvert,
+  fonttitle=\bfseries, title=#1, left=4pt, right=4pt
+}
+\newtcolorbox{warningbox}{
+  colback=orange!10, colframe=orange!70,
+  fonttitle=\bfseries, title=Remarque importante
+}
+\newtcolorbox{infobox}[1][]{
+  colback=codeblue!7, colframe=codeblue,
+  fonttitle=\bfseries, title=#1, left=4pt, right=4pt
+}
+\newtcolorbox{successbox}[1][]{
+  colback=gcvert!7, colframe=gcvert!60,
+  fonttitle=\bfseries, title=#1, left=4pt, right=4pt
+}
+
+% ── Acronymes ────────────────────────────────────────────────
+\usepackage{acronym}
+
+% ── Hyperliens ───────────────────────────────────────────────
+\usepackage[
+  colorlinks=true, linkcolor=gcvert,
+  citecolor=gcvert!80!black, urlcolor=codeblue,
+  bookmarks=true, bookmarksnumbered=true,
+  pdftitle={Grenier Commun — Rapport Scientifique},
+  pdfsubject={Plateforme AgriTech Django — Sénégal}
+]{hyperref}
+
+% ── Bibliographie ─────────────────────────────────────────────
+\usepackage[style=ieee,sorting=none,backend=biber]{biblatex}
+\addbibresource{references.bib}
+
+% ── Commandes personnalisées ─────────────────────────────────
+\newcommand{\gc}{\textsc{Grenier Commun}}
+\newcommand{\fcfa}{\textsc{fcfa}}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\version}{1.0.0}
+
+% ── Styles TikZ réutilisables ────────────────────────────────
+\tikzset{
+  layerbox/.style={
+    rectangle, rounded corners=4pt, draw=gcvert, fill=gcvert!10,
+    minimum width=12cm, minimum height=1.0cm, text centered,
+    font=\small\bfseries
+  },
+  seqactor/.style={
+    rectangle, draw=gcvert!80, fill=gcvert!15,
+    minimum width=2.2cm, minimum height=0.7cm,
+    text centered, font=\footnotesize\bfseries
+  },
+  seqmsg/.style={->, >=stealth, thick, gcvert!70},
+  seqret/.style={->, >=stealth, dashed, gcgris},
+  umlclass/.style={
+    rectangle, draw=gcgris, fill=white,
+    minimum width=3.5cm, text centered, font=\footnotesize
+  },
+  ucactor/.style={
+    circle, draw=gcvert!80, fill=gcvert!15,
+    minimum size=0.8cm, font=\footnotesize
+  },
+  ucoval/.style={
+    ellipse, draw=gcor!80, fill=gcor!10,
+    minimum width=3cm, minimum height=0.7cm,
+    text centered, font=\footnotesize
+  },
+  flowbox/.style={
+    rectangle, rounded corners=3pt, draw=gcvert, fill=gcvert!10,
+    minimum width=4cm, minimum height=0.8cm, align=center,
+    font=\footnotesize
+  },
+  flowdec/.style={
+    diamond, draw=gcor, fill=gcor!15,
+    minimum width=2.2cm, minimum height=0.9cm,
+    align=center, font=\footnotesize, aspect=2
+  },
+  deploybox/.style={
+    rectangle, rounded corners=4pt, draw=codeblue, fill=codeblue!10,
+    minimum width=3.5cm, minimum height=1.0cm, align=center,
+    font=\footnotesize\bfseries
+  }
+}
+
+% =============================================================
+%  DOCUMENT
+% =============================================================
+\begin{document}
+
+\pagenumbering{roman}
+
+% ── PAGE DE GARDE ─────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\vspace*{0.4cm}
+
+% ── Logo centré ──────────────────────────────────────────────
+\includegraphics[height=2.2cm]{screenshots/LOGO_ENSAM.jpg}\\[0.3cm]
+
+% ── Filet fin logo / infos ───────────────────────────────────
+{\color{gcgris!40}\rule{0.85\textwidth}{0.4pt}}\\[0.35cm]
+
+% ── Infos institutionnelles (au-dessus de la zone verte-orange) ──
+{\large\bfseries École Nationale Supérieure d'Arts et Métiers -- Meknès}\\[0.38cm]
+{\small\itshape Université Moulay Ismaïl}\\[0.32cm]
+{\normalsize Filière : Intelligence Artificielle et Technologies des données -- Systèmes Industriels}
+
+% ── Espace élastique : pousse la section projet vers le centre ──
+\vfill
+
+% ── Ligne verte (remontée : plus d'espace sous elle) ─────────
+\begin{tikzpicture}
+  \draw[gcvert, line width=2pt] (0,0) rectangle (14,0.08);
+\end{tikzpicture}\\[0.75cm]
+
+{\small\itshape Rapport de projet de l'élément Digital Web Prototyping}\\[0.65cm]
+
+% ── Boîte projet (inchangée) ─────────────────────────────────
+\begin{tikzpicture}
+  \node[rectangle, rounded corners=8pt, fill=gcvert!15, draw=gcvert, line width=1.5pt,
+        minimum width=13cm, minimum height=3.5cm, text centered] {
+    \begin{minipage}{12cm}\centering
+      {\Huge\bfseries\color{gcvert} Grenier Commun}\\[0.4cm]
+      {\Large\color{gcgris} Plateforme numérique de stockage agricole,\\
+      de warrantage et d'intelligence artificielle\\
+      pour l'agriculture sénégalaise}
+    \end{minipage}
+  };
+\end{tikzpicture}\\[1.1cm]
+
+% ── Ligne orange (descendue : plus d'espace au-dessus) ───────
+\begin{tikzpicture}
+  \draw[gcor, line width=1.5pt] (0,0) rectangle (14,0.06);
+\end{tikzpicture}
+
+% ── Espace élastique : pousse les noms vers le bas ───────────
+\vfill
+
+% ── Auteur / Encadrant en deux colonnes, noms en grand ───────
+\noindent
+\begin{minipage}[t]{0.48\textwidth}
+  \raggedright
+  {\large\bfseries Réalisé par :}\\[0.5cm]
+  {\Large Souleymane Diallo}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+  \raggedleft
+  {\large\bfseries Encadrant :}\\[0.5cm]
+  {\Large Pr. Brahim Bakkas}
+\end{minipage}
+
+\vspace{0.8cm}
+\begin{tikzpicture}
+  \draw[gcgris!50, line width=0.5pt] (0,0) -- (14,0);
+\end{tikzpicture}\\[0.2cm]
+{\small Année universitaire 2025--2026}
+\end{titlepage}
+
+% ── RÉSUMÉ ───────────────────────────────────────────────────
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+
+\gc{} est une plateforme web complète développée en Django 5.0.6 pour numériser et
+optimiser la chaîne de valeur agricole au Sénégal, de la récolte à la commercialisation.
+Le système adresse trois problèmes structurels majeurs du secteur agricole sénégalais :
+les pertes post-récolte estimées à 20--30\,\% de la production~\cite{fao2019postharvest},
+la vente en détresse des agriculteurs contraints de céder leurs récoltes à bas prix
+immédiatement après la moisson~\cite{jayne2010distress}, et l'exclusion financière des
+petits producteurs qui n'ont pas accès au crédit bancaire formel~\cite{worldbank2022senegal}.
+
+La plateforme repose sur une architecture Django multi-applications composée de
+12~modules fonctionnels, 47~templates HTML, 73~fichiers Python et une base de données
+PostgreSQL hébergée sur Railway. Elle implémente cinq profils utilisateurs distincts (\emph{Agriculteur}, \emph{Gestionnaire de silo},
+\emph{Acheteur}, \emph{Institution de microfinance} et \emph{Administrateur \gc{}}),
+dont les interactions sont régies par un système de contrôle d'accès basé sur les rôles.
+
+L'originalité technique de la plateforme réside dans trois contributions majeures.
+Premièrement, un service de traduction IA quadrilingue (français, anglais, wolof,
+arabe) fondé sur le modèle Meta NLLB-200 distillé à 600M de paramètres via l'API
+HuggingFace Inference, avec repli automatique sur Google Translate via
+\texttt{deep-translator} et mise en cache Redis (TTL 24\,h). Deuxièmement, un
+assistant conversationnel contextuel alimenté par Claude Haiku 4.5
+(\texttt{claude-haiku-4-5-20251001}, Anthropic) qui exploite le mécanisme
+\emph{tool\_use} avec 15~outils métier, permettant au modèle d'interroger en
+temps réel les données de la plateforme (stocks, prix, warrantages, alertes silos).
+Troisièmement, un module d'intelligence prédictive utilisant Celery 5.4 pour des
+tâches planifiées d'analyse des prix agricoles et de calcul du score de crédit
+des agriculteurs sur une échelle de 0 à 100.
+
+\textbf{Mots-clés :} Django, AgriTech, warrantage, traduction NLP, NLLB-200, Claude
+Haiku, Celery, Redis, PostgreSQL, Sénégal, agriculture, microfinance.
+
+\vspace{1.2cm}
+\noindent\textbf{Abstract}
+
+\textit{\gc{} is a full-stack web platform built with Django 5.0.6 to digitise and
+optimise the agricultural value chain in Senegal, from harvest to market. The platform
+addresses three structural problems: post-harvest losses, distress selling, and
+financial exclusion. It implements five user roles across 12 Django applications and
+integrates AI-powered quadrilingual translation (NLLB-200), a contextual chatbot
+(Claude Haiku 4.5 with 15 tool-use capabilities), and predictive analytics via Celery
+background tasks. The system is deployed on Railway PaaS with PostgreSQL, Redis, and
+Cloudinary for media storage.}
+
+% ── TABLES ────────────────────────────────────────────────────
+\tableofcontents
+\addcontentsline{toc}{chapter}{Table des matières}
+
+\clearpage
+\listoffigures
+\addcontentsline{toc}{chapter}{Liste des figures}
+
+\clearpage
+\listoftables
+\addcontentsline{toc}{chapter}{Liste des tableaux}
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+% =============================================================
+% CHAPITRE 1 — INTRODUCTION
+% =============================================================
+\chapter{Introduction générale}
+
+\section{Contexte et motivation}
+
+L'agriculture constitue le pilier de l'économie sénégalaise : elle emploie
+environ 22\,\% de la population active et représente près de 17\,\% du PIB
+national selon les données de la DAPSA~\cite{dapsa2023}. Les filières
+stratégiques (arachide, mil, sorgho, maïs, niébé, riz) alimentent à la
+fois la consommation nationale et les exportations, avec une production céréalière
+globale évaluée à 2,9 millions de tonnes pour la campagne 2022--2023.
+
+Pourtant, malgré ce potentiel, le secteur agricole sénégalais souffre de
+dysfonctionnements structurels profonds qui limitent les revenus des producteurs
+et fragilisent la sécurité alimentaire nationale. Trois problèmes interdépendants
+dominent le paysage :
+
+\paragraph{Les pertes post-récolte.}
+La FAO estime que 20 à 30\,\% des céréales produites en Afrique subsaharienne
+sont perdues entre la récolte et la consommation finale, en raison du manque
+d'infrastructures de stockage adaptées, de la prolifération des insectes et
+rongeurs, et du déficit de contrôle des conditions thermohygrométriques
+~\cite{fao2019postharvest}. Au Sénégal, ces pertes représentent des centaines
+de milliers de tonnes par an, soit des milliards de francs CFA de valeur
+marchande détruite.
+
+\paragraph{La vente en détresse.}
+En l'absence de mécanismes de stockage et de financement adaptés, les agriculteurs
+sont contraints de vendre leur production immédiatement après la récolte, au moment
+précis où les prix de marché sont au plus bas~\cite{jayne2010distress}. Ce
+phénomène de \emph{distress selling} (vente sous contrainte de liquidité)
+prive les producteurs de la majeure partie de la valeur ajoutée qu'ils pourraient
+capturer en attendant 3 à 6 mois que les prix remontent naturellement.
+
+\paragraph{L'exclusion financière.}
+Moins de 20\,\% des agriculteurs sénégalais ont accès à un crédit formel
+~\cite{worldbank2022senegal}. Les institutions bancaires exigent des garanties
+immobilières que les petits producteurs ne possèdent pas, et les microcrédits
+disponibles sont souvent à des taux prohibitifs. Le warrantage, mécanisme par lequel un stock agricole sert de garantie pour obtenir un crédit, existe depuis
+les années 1990 en Afrique de l'Ouest~\cite{wfp2010warrantage,coulter2009warrantage},
+mais reste peu accessible faute de plateforme numérique pour le gérer.
+
+\section{Problématique}
+
+Face à ces constats, la question centrale de ce travail est la suivante :
+
+\begin{definitionbox}[Question de recherche]
+Comment concevoir et implémenter une plateforme numérique qui permette
+simultanément (1) de gérer les stocks agricoles en silo avec surveillance
+des conditions de conservation, (2) de faciliter l'accès au warrantage comme
+mécanisme de financement, (3) d'améliorer la transparence des marchés agricoles,
+et (4) de rendre ces services accessibles aux agriculteurs peu alphabétisés via
+l'intelligence artificielle multilingue, en particulier en langue wolof~?
+\end{definitionbox}
+
+Cette problématique engage des défis techniques hétérogènes (génie logiciel,
+traitement automatique des langues, systèmes distribués) et des défis de
+conception centrés sur les usages des agriculteurs sénégalais, dont une large
+fraction ne parle que le wolof ou le pulaar.
+
+\section{Objectifs du projet}
+
+\subsection{Objectif général}
+
+Concevoir, développer et déployer la plateforme \gc{} : un système web complet,
+sécurisé et multilingue permettant la gestion numérique du stockage agricole,
+du warrantage et des marchés agricoles au Sénégal, augmenté par un assistant
+conversationnel intelligent et un service de traduction automatique.
+
+\subsection{Objectifs spécifiques}
+
+\begin{enumerate}
+  \item Modéliser les processus métier complets du stockage agricole, du warrantage
+        et de la mise en marché au Sénégal.
+  \item Implémenter une architecture Django multi-modules avec contrôle d'accès
+        basé sur cinq rôles utilisateurs distincts.
+  \item Intégrer un service de traduction automatique quadrilingue (FR, EN, WO, AR)
+        fondé sur le modèle Meta NLLB-200.
+  \item Développer un chatbot contextuel utilisant l'API Claude Haiku d'Anthropic
+        avec le mécanisme \emph{tool\_use} pour interroger les données métier.
+  \item Implémenter un module de recommandations IA pour la vente et un algorithme
+        de score de crédit automatique.
+  \item Déployer l'application sur Railway avec PostgreSQL, Redis et Cloudinary.
+  \item Valider le système par des tests unitaires, d'intégration et de performance.
+\end{enumerate}
+
+\section{Périmètre fonctionnel}
+
+La plateforme \gc{} couvre le périmètre fonctionnel suivant :
+
+\begin{itemize}
+  \item \textbf{Gestion des dépôts :} enregistrement des dépôts de céréales dans
+        les silos, suivi des conditions de conservation (température, humidité),
+        génération automatique de reçus numérotés, alertes en cas d'anomalie.
+  \item \textbf{Warrantage numérique :} workflow complet de demande, instruction,
+        décision et suivi des crédits warrantage entre agriculteurs et IMF,
+        avec calcul automatique du montant warrantable (70\,\% de la valeur estimée).
+  \item \textbf{Marchés agricoles :} suivi des prix par denrée et région,
+        recommandations IA de vente, catalogue d'offres d'achat.
+  \item \textbf{Traduction multilingue :} traduction automatique des contenus en
+        français, anglais, wolof et arabe, accessible depuis n'importe quelle page.
+  \item \textbf{Assistant IA :} chatbot contextuel en langue naturelle, capable
+        d'interroger les données de la plateforme via 15 outils métier.
+  \item \textbf{Notifications multicanal :} alertes in-app, SMS (Twilio) et
+        notifications push pour les événements critiques.
+\end{itemize}
+
+\section{Organisation du rapport}
+
+Ce rapport est structuré en huit chapitres :
+
+\begin{description}[leftmargin=2cm]
+  \item[Chapitre 2] présente l'état de l'art sur l'agriculture sénégalaise,
+        le warrantage en Afrique, les plateformes AgriTech et le traitement
+        automatique des langues à faibles ressources.
+  \item[Chapitre 3] formalise l'analyse des besoins fonctionnels et non-fonctionnels
+        à travers les diagrammes de cas d'utilisation et les spécifications des
+        cinq acteurs.
+  \item[Chapitre 4] présente la conception architecturale : modèle de données,
+        diagramme de classes UML, architecture de déploiement et conception UI/UX.
+  \item[Chapitre 5] détaille l'implémentation technique des modules principaux :
+        service de traduction, chatbot Claude, tâches Celery, sécurité, i18n.
+  \item[Chapitre 6] décrit la stratégie de tests : unitaires, intégration,
+        performance, couverture.
+  \item[Chapitre 7] couvre le déploiement sur Railway et la configuration de
+        la production.
+  \item[Chapitre 8] présente les interfaces utilisateurs avec captures d'écran
+        annotées pour chaque profil.
+\end{description}
+
+% =============================================================
+% CHAPITRE 2 — ÉTAT DE L'ART
+% =============================================================
+\chapter{État de l'art et positionnement}
+
+\section{L'agriculture sénégalaise : données et enjeux}
+
+\subsection{Filières céréalières stratégiques}
+
+Le secteur agricole sénégalais repose sur une diversité de cultures dont les
+conditions de production, de stockage et de commercialisation diffèrent
+substantiellement~\cite{dapsa2023}. Le tableau~\ref{tab:filieres} synthétise
+les principales filières et leurs caractéristiques.
+
+\begin{table}[H]
+\centering
+\caption{Filières céréalières stratégiques au Sénégal, campagne 2022--2023}
+\label{tab:filieres}
+\begin{tabular}{L{2.5cm}R{2cm}R{2.2cm}L{4cm}L{3cm}}
+\toprule
+\textbf{Denrée} & \textbf{Production (t)} & \textbf{Prix moyen (FCFA/kg)} & \textbf{Régions principales} & \textbf{Durée stockage} \\
+\midrule
+Arachide        & 1\,450\,000 & 350--500  & Kaffrine, Kaolack, Diourbel & 6--12 mois \\
+Mil             & 980\,000    & 200--280  & Thiès, Louga, Saint-Louis   & 12--24 mois \\
+Sorgho          & 320\,000    & 180--240  & Tambacounda, Kolda           & 12--18 mois \\
+Maïs            & 680\,000    & 220--300  & Kolda, Ziguinchor, Sédhiou   & 6--12 mois \\
+Niébé           & 145\,000    & 400--600  & Louga, Matam, Fatick          & 12--18 mois \\
+Riz local       & 290\,000    & 280--380  & Saint-Louis, Ziguinchor       & 6--12 mois \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+L'analyse de ces filières révèle une caractéristique commune : les prix varient
+fortement sur l'année, avec un creux systématique en novembre--décembre (période
+post-récolte) et un pic en juillet--septembre (soudure). Pour le mil, l'écart
+entre prix post-récolte et prix de soudure peut atteindre 80\,\%, ce qui représente
+une opportunité économique considérable pour les agriculteurs disposant d'une
+capacité de stockage~\cite{casaburi2019demand}.
+
+\subsection{Infrastructures de stockage existantes}
+
+Le réseau de stockage agricole sénégalais comprend des infrastructures à plusieurs
+échelles. Les greniers familiaux, construits en banco ou en tiges de mil,
+assurent une conservation rudimentaire sur 2 à 4 mois avec des taux de perte
+élevés (10--25\,\%). Les silos métalliques de village, introduits par des ONG
+et des coopératives, offrent une meilleure protection mais restent sous-utilisés
+faute de gestionnaires formés. Les entrepôts certifiés gérés par la SONACOS
+(Société Nationale de Commercialisation des Oléagineux du Sénégal) et quelques
+opérateurs privés constituent l'échelon supérieur, avec des capacités de
+conservation de 6 à 18 mois, mais leur accès est réservé aux grands producteurs.
+
+\gc{} s'insère dans ce paysage en proposant un outil numérique de gestion des
+silos certifiés, offrant à leurs gestionnaires un tableau de bord de suivi des
+conditions environnementales et aux agriculteurs un accès simple à ce réseau.
+
+\section{Le warrantage agricole en Afrique de l'Ouest}
+
+\subsection{Mécanisme et histoire}
+
+Le warrantage, aussi appelé \emph{système de récépissé d'entrepôt} dans sa
+forme réglementée, est un mécanisme financier par lequel un producteur agricole
+dépose sa récolte dans un entrepôt certifié et obtient en échange un récépissé
+(ou \emph{warrant}) lui permettant d'emprunter jusqu'à 70--80\,\% de la valeur
+de son stock auprès d'une institution financière~\cite{wfp2010warrantage}.
+
+Ce mécanisme a été théorisé et popularisé par Coulter et Shepherd dès
+1995~\cite{coulter2009warrantage} et expérimenté au Mali, au Niger, au
+Burkina Faso et au Sénégal dans les années 2000 avec le soutien du PAM et
+de la FAO. Il repose sur quatre acteurs principaux : l'agriculteur déposant,
+le gestionnaire de l'entrepôt certifié, l'institution de microfinance qui
+octroie le crédit, et l'administrateur du système qui coordonne les flux.
+
+La figure~\ref{fig:flux_warrantage} illustre le flux financier complet du
+mécanisme de warrantage tel qu'implémenté dans \gc{}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.4cm, >=stealth]
+  % Actors
+  \node[seqactor, minimum width=2.6cm] (agri) at (0,0) {Agriculteur};
+  \node[seqactor, minimum width=2.6cm] (silo) at (4,0) {Silo certifié};
+  \node[seqactor, minimum width=2.6cm] (gc)   at (8,0) {\gc{} Admin};
+  \node[seqactor, minimum width=2.6cm] (imf)  at (12,0) {IMF Partenaire};
+
+  % Lifelines
+  \draw[dashed, gcgris!50] (0,-0.35) -- (0,-8.5);
+  \draw[dashed, gcgris!50] (4,-0.35) -- (4,-8.5);
+  \draw[dashed, gcgris!50] (8,-0.35) -- (8,-8.5);
+  \draw[dashed, gcgris!50] (12,-0.35) -- (12,-8.5);
+
+  % Step 1
+  \draw[seqmsg] (0,-1.0) -- node[above,font=\tiny] {1. Dépôt céréales} (4,-1.0);
+  \node[font=\tiny, gcgris, right] at (4,-1.2) {Quantité, denrée, conditions};
+
+  % Step 2
+  \draw[seqret] (4,-1.8) -- node[above,font=\tiny] {2. Reçu GC-YYYYMM-\#\#\#\#\#} (0,-1.8);
+
+  % Step 3
+  \draw[seqmsg] (0,-2.6) -- node[above,font=\tiny] {3. Demande warrantage} (8,-2.6);
+  \node[font=\tiny, gcgris, right] at (0,-2.8) {Montant demandé $\leq$ 70\,\% valeur};
+
+  % Step 4
+  \draw[seqmsg] (8,-3.4) -- node[above,font=\tiny] {4. Score crédit IA} (8,-3.4);
+  \draw[seqmsg] (8,-3.8) -- node[above,font=\tiny] {4b. Transmission dossier} (12,-3.8);
+
+  % Step 5
+  \draw[seqmsg] (12,-4.6) -- node[above,font=\tiny] {5. Décision IMF} (8,-4.6);
+  \node[font=\tiny, gcgris] at (10,-4.9) {APPROUVÉ / REFUSÉ};
+
+  % Step 6
+  \draw[seqmsg] (8,-5.4) -- node[above,font=\tiny] {6. Notification décision} (0,-5.4);
+
+  % Step 7 (if approved)
+  \draw[seqmsg] (12,-6.2) -- node[above,font=\tiny] {7. Virement (Wave/OM)} (0,-6.2);
+  \node[font=\tiny, gcgris] at (6,-6.45) {Statut $\to$ VIRÉ};
+
+  % Step 8
+  \draw[seqmsg] (0,-7.1) -- node[above,font=\tiny] {8. Remboursement} (12,-7.1);
+  \node[font=\tiny, gcgris] at (6,-7.35) {Capital + intérêts (taux IMF\,\%/mois)};
+
+  % Step 9
+  \draw[seqmsg] (4,-7.9) -- node[above,font=\tiny] {9. Restitution stock} (0,-7.9);
+  \node[font=\tiny, gcgris] at (2,-8.1) {Statut $\to$ REMBOURSÉ};
+\end{tikzpicture}
+\caption{Flux complet du mécanisme de warrantage dans \gc{}}
+\label{fig:flux_warrantage}
+\end{figure}
+
+\subsection{Impact économique démontré}
+
+Des travaux académiques ont quantifié l'impact du warrantage sur les revenus
+agricoles. Casaburi et Macchiavello~\cite{casaburi2019demand} ont montré, sur
+des données kenyanes, que les mécanismes d'engagement financier liés au stockage
+peuvent augmenter les revenus agricoles nets de 15 à 25\,\% en permettant aux
+producteurs de vendre à un meilleur moment. Khandker et Faruqee~\cite{khandker2003impact}
+ont documenté des effets similaires sur le crédit agricole au Pakistan. Dans le
+contexte ouest-africain, l'UEMOA~\cite{uemoa2021financement} estime le potentiel
+du warrantage numérique à plusieurs dizaines de milliards de FCFA de crédits
+additionnels mobilisables, sous réserve d'une infrastructure numérique adéquate.
+
+\section{Plateformes AgriTech africaines : revue comparative}
+
+\subsection{Panorama des solutions existantes}
+
+L'écosystème AgriTech africain s'est considérablement développé depuis 2015,
+avec l'émergence de plateformes couvrant des segments variés : information sur
+les prix, accès aux intrants, assurance paramétrique, crédit numérique et
+gestion des stocks~\cite{bakhoum2021digital,fao2021ml}.
+
+\begin{longtable}{L{2.5cm}C{1.5cm}C{1.5cm}C{1.8cm}C{1.8cm}C{2.0cm}}
+\caption{Analyse comparative des plateformes AgriTech africaines}
+\label{tab:agritech_comparatif}\\
+\toprule
+\textbf{Plateforme} & \textbf{Pays} & \textbf{Stock.} & \textbf{Warrant.} & \textbf{IA/NLP} & \textbf{Multilingue} \\
+\midrule
+\endfirsthead
+\multicolumn{6}{c}{\small\itshape Suite du tableau~\ref{tab:agritech_comparatif}}\\
+\toprule
+\textbf{Plateforme} & \textbf{Pays} & \textbf{Stock.} & \textbf{Warrant.} & \textbf{IA/NLP} & \textbf{Multilingue} \\
+\midrule
+\endhead
+\midrule
+\multicolumn{6}{r}{\small\itshape Suite page suivante}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Twiga Foods       & Kenya    & \checkmark & $\times$ & Partiel & Non \\
+Apollo Agriculture & Kenya   & $\times$   & \checkmark & IA prédictive & Non \\
+Farmerline        & Ghana    & $\times$   & $\times$ & SMS IA & Oui (Twi, Hausa) \\
+Hello Tractor     & Nigeria  & $\times$   & $\times$ & Non & Non \\
+DigiFarm (Safaricom) & Kenya & $\times$   & \checkmark & Non & Non \\
+WeFarm            & Kenya    & $\times$   & $\times$ & NLP Q\&A & Non \\
+M-Farm            & Kenya    & $\times$   & $\times$ & Prix SMS & Non \\
+Esoko             & Ghana    & $\times$   & $\times$ & Alertes SMS & Partiel \\
+\textbf{\gc{}}    & \textbf{Sénégal} & \checkmark & \checkmark & \checkmark & \checkmark \\
+\end{longtable}
+
+Le tableau~\ref{tab:agritech_comparatif} révèle un constat important :
+aucune des plateformes africaines existantes ne combine simultanément la
+gestion de stocks en silo, le warrantage numérique, l'intelligence artificielle
+conversationnelle et le support multilingue incluant des langues à faibles
+ressources comme le wolof. \gc{} se positionne donc sur un segment inoccupé.
+
+\subsection{Analyse critique}
+
+\paragraph{Forces des plateformes existantes.}
+Apollo Agriculture (Kenya) a démontré la viabilité économique du crédit
+agricole numérique adossé à des données satellitaires et comportementales,
+avec plus de 350\,000 agriculteurs clients en 2023~\cite{fao2021ml}.
+Farmerline (Ghana) a établi la preuve de concept du support multilingue
+en langues africaines pour les services agricoles, en intégrant le Twi
+et le Hausa dans ses SMS automatisés~\cite{nakasone2016ict}.
+
+\paragraph{Lacunes identifiées.}
+Trois lacunes structurelles caractérisent les solutions existantes :
+(1) le cloisonnement entre gestion physique du stock et services financiers,
+(2) l'absence de traitement automatique des langues locales sub-sahariennes,
+et (3) l'absence d'assistant conversationnel capable d'expliquer les
+données financières aux agriculteurs peu alphabétisés.
+
+\section{Traitement automatique des langues à faibles ressources}
+
+\subsection{Le défi des langues africaines en NLP}
+
+Les langues africaines, dont le wolof parlé par 80\,\% des Sénégalais,
+représentent un défi majeur pour le NLP. Joshi et al.~\cite{joshi2020state}
+ont classifié les 7\,000 langues du monde selon leur niveau de ressources
+numériques disponibles : le wolof appartient à la catégorie~5 (\emph{left-behind}),
+avec moins de 0,01\,\% des données d'entraînement des grands modèles de langage.
+Adelani et al.~\cite{adelani2022masakhaner} ont documenté les défis spécifiques
+du NER pour les langues africaines, soulignant le besoin de données annotées et
+de modèles adaptés au transfert d'apprentissage.
+
+\subsection{Évolution des architectures de traduction}
+
+La traduction automatique neuronale a connu trois ruptures architecturales
+majeures depuis 2014~\cite{devlin2019bert,brown2020gpt3} :
+
+\begin{enumerate}
+  \item \textbf{Réseaux récurrents (RNN-LSTM, 2014--2017) :} Bonnes performances
+        sur paires de langues à fort volume de données, mais impossibilité de
+        paralléliser et dégradation sur les longues séquences.
+  \item \textbf{Architecture Transformer (2017--2020) :} L'attention multi-têtes
+        permet le traitement parallèle et améliore la capture des dépendances
+        à longue distance. BERT~\cite{devlin2019bert} et mBART établissent
+        les fondements de la traduction multilingue.
+  \item \textbf{Modèles massifs multilingues (2020+) :} GPT-3~\cite{brown2020gpt3}
+        et NLLB-200~\cite{fan2022nllb} permettent la traduction zéro-shot
+        et few-shot entre centaines de langues.
+\end{enumerate}
+
+\subsection{Comparatif des modèles de traduction multilingues}
+
+Le tableau~\ref{tab:nmt_comparatif} compare les principaux modèles candidats
+pour le support du wolof dans \gc{}.
+
+\begin{table}[H]
+\centering
+\caption{Comparatif des modèles NMT multilingues pour le support wolof}
+\label{tab:nmt_comparatif}
+\begin{tabular}{L{3cm}C{2cm}C{2cm}C{1.8cm}C{1.8cm}C{2cm}}
+\toprule
+\textbf{Modèle} & \textbf{Langues} & \textbf{Params} & \textbf{Wolof} & \textbf{Latence} & \textbf{Usage} \\
+\midrule
+Helsinki-NLP OPUS & 200+    & 77M    & Partiel   & 50--100ms  & Local \\
+M2M-100 (Meta)    & 100     & 418M   & Non       & 200--500ms & Local \\
+mBART-50          & 50      & 610M   & Non       & 200--400ms & Local \\
+NLLB-200-600M     & 200     & 600M   & Oui       & 300ms API  & HuggingFace \\
+NLLB-200-1.3B     & 200     & 1.3B   & Oui       & 600ms API  & HuggingFace \\
+Google Translate  & 133     & N/A    & Partiel   & 100--200ms & API payante \\
+DeepL             & 31      & N/A    & Non       & 50--100ms  & API payante \\
+\textbf{Choix GC} & \textbf{200}& \textbf{600M}& \textbf{Oui}& \textbf{300ms}& \textbf{HF API} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Justification du choix NLLB-200 distillé 600M.}
+Le modèle \texttt{facebook/nllb-200-distilled-600M}~\cite{fan2022nllb,huggingface2024nllb}
+a été retenu pour quatre raisons principales :
+(i) c'est le seul modèle open source qui supporte nativement le wolof (\emph{wol\_Latn})
+avec des scores BLEU documentés~;
+(ii) sa version distillée à 600M de paramètres offre un bon compromis entre qualité
+de traduction et latence d'inférence via l'API HuggingFace~;
+(iii) son accès via l'API HuggingFace Inference évite d'héberger le modèle
+localement (coût mémoire de 2,4\,GB)~;
+(iv) la licence Creative Commons BY-NC 4.0 est compatible avec un usage académique.
+
+\subsection{Modèles de langage et interface conversationnelle}
+
+L'émergence des \emph{Large Language Models} (LLMs) avec capacités d'appel d'outils
+(\emph{function calling} ou \emph{tool\_use}) a ouvert de nouvelles possibilités
+pour les assistants contextuels dans des domaines métier spécialisés~\cite{brown2020gpt3}.
+
+Claude Haiku~\cite{anthropic2024haiku}, le modèle compact de la famille Claude
+d'Anthropic, est particulièrement adapté au cas de \gc{} pour plusieurs raisons :
+(i) latence inférieure à 500ms pour des requêtes conversationnelles de longueur
+modérée~; (ii) support natif du mécanisme \emph{tool\_use} permettant au modèle
+d'appeler des fonctions Python définies par l'application~;
+(iii) qualité de compréhension des langues africaines supérieure aux modèles
+de taille comparable~; (iv) coût par token significativement inférieur aux modèles
+GPT-4 ou Claude Opus~\cite{anthropic2024claude}.
+
+\section{Prévision des prix agricoles par IA}
+
+\subsection{Méthodes de prévision}
+
+La prévision des prix agricoles est un domaine d'application établi du machine
+learning~\cite{ghosh2019arima}. Les modèles ARIMA (AutoRegressive Integrated
+Moving Average) constituent la référence économétrique classique pour les séries
+temporelles de prix, avec des performances documentées sur les marchés céréaliers
+africains. Plus récemment, les réseaux de neurones récurrents LSTM ont démontré
+leur supériorité sur ARIMA pour les séries à forte non-linéarité~\cite{cao2019lstm}.
+
+Dans \gc{}, une approche hybride simplifiée est retenue : les recommandations
+de vente sont générées sur la base de règles heuristiques fondées sur les
+variations de prix observées sur 8 semaines glissantes, combinées à une
+régression linéaire pour estimer la tendance à 4 et 8 semaines. Cette
+approche est délibérément simple pour garantir l'explicabilité des recommandations
+aux agriculteurs.
+
+\subsection{Score de crédit agricole}
+
+Le calcul automatique d'un score de crédit pour les agriculteurs est une
+application du machine learning à la microfinance rurale~\cite{khandker2003impact}.
+Dans \gc{}, le score (0--100 points) repose sur quatre composantes basées
+sur l'historique de comportement sur la plateforme :
+
+\begin{equation}
+S = 50 + S_{\text{ancienneté}} + S_{\text{dépôts}} + S_{\text{remboursements}} + S_{\text{volume}}
+\end{equation}
+
+où chaque composante est bornée (voir section~\ref{sec:celery_tasks} pour
+les détails de l'implémentation).
+
+\section{Mobile money et services financiers numériques}
+
+L'intégration du mobile money comme vecteur de virement des crédits warrantage
+s'appuie sur une infrastructure déjà dense en Afrique de l'Ouest. Jack et
+Suri~\cite{jack2011mobile} ont été les premiers à documenter rigoureusement
+l'impact du mobile money (M-Pesa au Kenya) sur la résilience financière des
+ménages ruraux. La GSMA~\cite{gsma2023mobileafrica} rapporte que l'Afrique
+subsaharienne concentre 57\,\% des comptes mobile money actifs dans le monde,
+avec des opérateurs comme Wave et Orange Money très présents au Sénégal.
+
+\gc{} n'implémente pas directement l'API Wave ou Orange Money dans sa
+version actuelle, mais le workflow de warrantage prévoit un champ
+\texttt{mode\_paiement} (Wave/Orange Money) qui servira de base à
+l'intégration future de ces API.
+
+\section{Synthèse du positionnement}
+
+\gc{} se distingue de l'existant sur cinq axes d'innovation combinés :
+
+\begin{table}[H]
+\centering
+\caption{Positionnement de \gc{} par rapport à l'état de l'art}
+\label{tab:positionnement}
+\begin{tabular}{L{5cm}C{3cm}C{3cm}}
+\toprule
+\textbf{Dimension} & \textbf{État de l'art} & \textbf{\gc{}} \\
+\midrule
+Gestion physique des stocks    & Logiciels isolés   & Intégré + alertes IA \\
+Warrantage numérique           & Processus papier   & Workflow complet \\
+Traduction langues africaines  & Absent             & NLLB-200 wolof \\
+Assistant conversationnel      & Absent             & Claude + 15 outils \\
+Score crédit automatique       & Scoring externe    & Calculé in-app \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =============================================================
+% CHAPITRE 3 — ANALYSE DES BESOINS
+% =============================================================
+\chapter{Analyse des besoins}
+
+\section{Identification des acteurs}
+
+\gc{} distingue cinq profils utilisateurs dont les responsabilités et les
+niveaux d'accès sont strictement séparés par un système de contrôle d'accès
+basé sur les rôles (RBAC). Le modèle \texttt{User} personnalisé étend
+\texttt{AbstractBaseUser} et ajoute un champ \texttt{role} à choix parmi
+les constantes définies dans \texttt{apps.accounts.models}.
+
+\begin{table}[H]
+\centering
+\caption{Profils utilisateurs et responsabilités dans \gc{}}
+\label{tab:acteurs}
+\begin{tabular}{L{3cm}L{4.5cm}L{6cm}}
+\toprule
+\textbf{Rôle} & \textbf{Constante Django} & \textbf{Responsabilités principales} \\
+\midrule
+Agriculteur        & \texttt{AGRICULTEUR}   & Déposer des céréales, demander des warrantages, consulter prix du marché, utiliser le chatbot \\
+Gestionnaire silo  & \texttt{GESTIONNAIRE}  & Enregistrer les dépôts, surveiller les conditions, générer les reçus, gérer les retraits \\
+Acheteur           & \texttt{ACHETEUR}      & Consulter le catalogue des stocks disponibles, faire des offres d'achat, suivre les transactions \\
+IMF partenaire     & \texttt{IMF}           & Instruire les dossiers de warrantage, prendre des décisions de crédit, gérer les remboursements \\
+Administrateur GC  & \texttt{ADMIN\_GC}     & Superviser l'ensemble de la plateforme, gérer les silos, les IMF, transmettre les dossiers \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Besoins fonctionnels}
+
+\subsection{Besoins de l'Agriculteur}
+
+\begin{enumerate}[label=\textbf{BF-A\arabic*}]
+  \item Créer un compte avec numéro de téléphone, nom complet, région et cultures pratiquées.
+  \item Consulter la liste de ses dépôts actifs avec les quantités, valeurs estimées et dates.
+  \item Visualiser son score de crédit (0--100) et la catégorie de risque associée.
+  \item Soumettre une demande de warrantage en indiquant le dépôt en garantie et le montant désiré.
+  \item Recevoir une notification SMS et in-app à chaque changement de statut de son dossier.
+  \item Consulter les prix du marché par denrée et région avec les recommandations IA.
+  \item Utiliser le chatbot en français, anglais, wolof ou arabe pour interroger ses données.
+  \item Traduire tout contenu de la plateforme dans sa langue préférée.
+  \item Télécharger son reçu de dépôt en PDF (généré par WeasyPrint).
+  \item Demander un retrait partiel ou total de son stock (sous conditions contractuelles).
+\end{enumerate}
+
+\subsection{Besoins du Gestionnaire de silo}
+
+\begin{enumerate}[label=\textbf{BF-G\arabic*}]
+  \item Enregistrer un nouveau dépôt pour un agriculteur (denrée, quantité, silo).
+  \item Calculer automatiquement la valeur estimée et le montant warrantable.
+  \item Générer un numéro de reçu unique (format \texttt{GC-YYYYMM-\#\#\#\#\#}).
+  \item Saisir les conditions environnementales du silo (température, humidité).
+  \item Recevoir des alertes automatiques lorsque les seuils sont dépassés.
+  \item Valider ou rejeter les demandes de retrait des agriculteurs.
+  \item Consulter le tableau de bord avec le taux de remplissage en temps réel.
+  \item Générer des rapports PDF d'inventaire des stocks par période.
+\end{enumerate}
+
+\subsection{Besoins de l'Acheteur}
+
+\begin{enumerate}[label=\textbf{BF-AC\arabic*}]
+  \item Consulter le catalogue des stocks disponibles à la vente avec filtres.
+  \item Voir le détail de chaque lot (denrée, quantité, prix, localisation du silo).
+  \item Soumettre une offre d'achat avec prix proposé et quantité désirée.
+  \item Suivre l'état de ses offres (en attente, acceptée, refusée).
+  \item Recevoir une notification lorsqu'une nouvelle offre matche ses critères de recherche.
+  \item Accéder à l'historique de ses transactions validées.
+  \item Utiliser le chatbot pour obtenir des recommandations d'achat.
+  \item Télécharger les contrats de vente en PDF.
+\end{enumerate}
+
+\subsection{Besoins de l'Institution de Microfinance}
+
+\begin{enumerate}[label=\textbf{BF-I\arabic*}]
+  \item Consulter la file d'attente des dossiers warrantage transmis par l'admin GC.
+  \item Visualiser la fiche complète d'un dossier : agriculteur, dépôt en garantie, score crédit.
+  \item Prendre une décision d'approbation (avec montant accordé) ou de refus (avec motif).
+  \item Enregistrer le virement effectué (Wave ou Orange Money) pour déclencher l'alerte.
+  \item Suivre le portefeuille des crédits actifs et les échéances de remboursement.
+  \item Recevoir une alerte automatique pour les dossiers en retard de remboursement.
+  \item Générer des rapports de portefeuille en PDF par période.
+  \item Configurer le taux d'intérêt mensuel et le délai de traitement de l'IMF.
+\end{enumerate}
+
+\subsection{Besoins de l'Administrateur \gc{}}
+
+\begin{enumerate}[label=\textbf{BF-AD\arabic*}]
+  \item Gérer le référentiel des silos (création, activation, paramètres).
+  \item Gérer le référentiel des denrées (noms, paramètres de conservation).
+  \item Gérer les IMF partenaires et leurs conditions contractuelles.
+  \item Transmettre les dossiers warrantage soumis aux IMF partenaires.
+  \item Visualiser le tableau de bord global avec carte des silos (Leaflet.js).
+  \item Accéder aux statistiques globales : volumes, transactions, revenus de commission.
+  \item Configurer les taux de commission et les paramètres système.
+  \item Superviser les logs d'accès et les incidents de sécurité.
+\end{enumerate}
+
+\section{Besoins non-fonctionnels}
+
+\begin{table}[H]
+\centering
+\caption{Besoins non-fonctionnels avec métriques de validation}
+\label{tab:bnf}
+\begin{tabular}{L{2.5cm}L{6cm}L{5cm}}
+\toprule
+\textbf{Catégorie} & \textbf{Exigence} & \textbf{Métrique de validation} \\
+\midrule
+Performance    & Temps de réponse pages Django & P95 $<$ 800ms (ab, 100 req.) \\
+Performance    & Latence traduction NLLB-200   & P95 $<$ 2s \\
+Performance    & Réponse chatbot premier token & P95 $<$ 1.5s \\
+Disponibilité  & Uptime plateforme             & $\geq$ 99.5\,\% (Railway SLA) \\
+Sécurité       & Authentification 2FA téléphone& OTP SMS via Twilio \\
+Sécurité       & Bruteforce protection         & django-axes : 5 essais max \\
+Sécurité       & Headers HTTP sécurisés        & OWASP Top 10 respecté~\cite{owasp2021top10} \\
+Accessibilité  & Support mobile                & Responsive TailwindCSS \\
+Accessibilité  & RTL (arabe)                   & Direction CSS automatique \\
+Internationalisation & 4 langues supportées  & FR, EN, WO, AR \\
+Scalabilité    & Workers Celery                & Horizontalement scalable \\
+Maintenabilité & Couverture tests              & $\geq$ 75\,\% (pytest-cov) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Diagramme de cas d'utilisation global}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.4cm]
+  % System boundary
+  \draw[gcvert, line width=1.5pt, rounded corners=6pt]
+    (0.5,-0.5) rectangle (12.5,-11.5);
+  \node[font=\small\bfseries\color{gcvert}] at (6.5,-0.2) {Système \gc{}};
+
+  % Use case nodes
+  \node[ucoval, minimum width=3.5cm] (uc1) at (6.5,-1.5) {UC01 S'authentifier};
+  \node[ucoval, minimum width=3.5cm] (uc2) at (6.5,-2.8) {UC02 Gérer les dépôts};
+  \node[ucoval, minimum width=3.5cm] (uc3) at (6.5,-4.1) {UC03 Warrantage};
+  \node[ucoval, minimum width=3.5cm] (uc4) at (6.5,-5.4) {UC04 Marché agricole};
+  \node[ucoval, minimum width=3.5cm] (uc5) at (6.5,-6.7) {UC05 Traduction IA};
+  \node[ucoval, minimum width=3.5cm] (uc6) at (6.5,-8.0) {UC06 Chatbot IA};
+  \node[ucoval, minimum width=3.5cm] (uc7) at (6.5,-9.3) {UC07 Notifications};
+  \node[ucoval, minimum width=3.5cm] (uc8) at (6.5,-10.6) {UC08 Administration};
+
+  % Actors left
+  \node[ucactor] (agri) at (-1.2,-4.0) {};
+  \node[font=\tiny, below=0.1cm of agri] {Agriculteur};
+  \node[ucactor] (gest) at (-1.2,-7.0) {};
+  \node[font=\tiny, below=0.1cm of gest] {Gestionnaire};
+  \node[ucactor] (ache) at (-1.2,-9.5) {};
+  \node[font=\tiny, below=0.1cm of ache] {Acheteur};
+
+  % Actors right
+  \node[ucactor] (imf)  at (13.8,-5.0) {};
+  \node[font=\tiny, below=0.1cm of imf] {IMF};
+  \node[ucactor] (adm)  at (13.8,-8.5) {};
+  \node[font=\tiny, below=0.1cm of adm] {Admin GC};
+
+  % Lines
+  \foreach \a in {agri,gest,ache}
+    \draw[gcgris!60] (\a) -- (uc1);
+  \draw[gcgris!60] (agri) -- (uc2);
+  \draw[gcgris!60] (gest) -- (uc2);
+  \draw[gcgris!60] (agri) -- (uc3);
+  \draw[gcgris!60] (imf)  -- (uc3);
+  \draw[gcgris!60] (agri) -- (uc4);
+  \draw[gcgris!60] (ache) -- (uc4);
+  \draw[gcgris!60] (agri) -- (uc5);
+  \draw[gcgris!60] (agri) -- (uc6);
+  \draw[gcgris!60] (gest) -- (uc7);
+  \draw[gcgris!60] (imf)  -- (uc8);
+  \draw[gcgris!60] (adm)  -- (uc8);
+\end{tikzpicture}
+\caption{Diagramme de cas d'utilisation global de \gc{}}
+\label{fig:uc_global}
+\end{figure}
+
+\section{Description détaillée des cas d'utilisation principaux}
+
+\subsection{UC03 --- Demande de warrantage}
+
+\begin{table}[H]
+\centering
+\caption{Fiche UC03 --- Demande de warrantage}
+\label{tab:uc03}
+\begin{tabular}{L{3.5cm}L{10cm}}
+\toprule
+\textbf{Identifiant}   & UC03 \\
+\textbf{Nom}           & Demande et traitement d'un crédit warrantage \\
+\textbf{Acteurs}       & Agriculteur (initiateur), Admin GC (transmetteur), IMF (décideur) \\
+\textbf{Précondition}  & L'agriculteur a un dépôt actif avec un stock non warranté \\
+\textbf{Postcondition} & Le statut du dossier est VIRÉ ou REFUSÉ ; un SMS est envoyé \\
+\midrule
+\textbf{Scénario nominal} &
+  1. L'agriculteur accède à «~Mes dépôts~» et choisit «~Demander un warrantage~».
+  2. Le système calcule automatiquement le montant warrantable (70\,\% valeur estimée).
+  3. L'agriculteur saisit le montant demandé ($\leq$ montant warrantable) et soumet.
+  4. Le système crée un dossier \texttt{WarrantageCredit} au statut SOUMIS.
+  5. L'Admin GC reçoit une notification et transmet le dossier à une IMF.
+  6. Le dossier passe au statut EN\_INSTRUCTION.
+  7. L'IMF consulte la fiche : agriculteur, dépôt, score crédit IA, historique.
+  8. L'IMF approuve avec un montant accordé ou refuse avec un motif.
+  9. Le statut passe à APPROUVÉ ou REFUSÉ ; SMS envoyé à l'agriculteur.
+  10. En cas d'approbation, l'IMF enregistre le virement. Statut : VIRÉ. \\
+\midrule
+\textbf{Alternative A} &
+  A3. Le montant saisi dépasse le montant warrantable : le système affiche une erreur
+  et propose le montant maximum. \\
+\textbf{Alternative B} &
+  B8. L'IMF demande des informations complémentaires : statut reste EN\_INSTRUCTION,
+  un commentaire est ajouté au dossier. \\
+\textbf{Exception E1}  &
+  E7. Le dépôt en garantie a été retiré par le gestionnaire : le système bloque la
+  demande et notifie l'agriculteur. \\
+\textbf{Exception E2}  &
+  E10. Le virement échoue (compte mobile money invalide) : statut reste APPROUVÉ,
+  une alerte est envoyée à l'IMF et à l'Admin GC. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{UC06 --- Interaction avec le chatbot IA}
+
+\begin{table}[H]
+\centering
+\caption{Fiche UC06 --- Chatbot IA contextuel}
+\label{tab:uc06}
+\begin{tabular}{L{3.5cm}L{10cm}}
+\toprule
+\textbf{Identifiant}   & UC06 \\
+\textbf{Nom}           & Interaction avec l'assistant conversationnel Claude Haiku \\
+\textbf{Acteurs}       & Tout utilisateur authentifié \\
+\textbf{Précondition}  & L'utilisateur est connecté ; \texttt{ANTHROPIC\_API\_KEY} est configurée \\
+\textbf{Postcondition} & L'utilisateur a reçu une réponse en sa langue ; la conversation est sauvegardée \\
+\midrule
+\textbf{Scénario nominal} &
+  1. L'utilisateur clique sur le widget chatbot flottant.
+  2. Le système détecte la langue préférée et le rôle de l'utilisateur.
+  3. \texttt{build\_system\_prompt()} construit le prompt système avec le contexte.
+  4. L'utilisateur saisit sa question (ex. : «~Combien vaut mon stock de mil ?~»).
+  5. La requête est envoyée à Claude Haiku avec la liste des 15 outils.
+  6. Claude décide d'appeler \texttt{get\_mes\_stocks} avec les filtres appropriés.
+  7. \texttt{execute\_tool()} interroge la base de données Django et renvoie les données.
+  8. Claude génère une réponse en langage naturel dans la langue de l'utilisateur.
+  9. Si Claude appelle plusieurs outils, la boucle se répète (max 6 itérations).
+  10. La réponse finale est affichée dans le widget via HTMX. \\
+\midrule
+\textbf{Alternative A} &
+  A4. L'utilisateur écrit en wolof : Claude Haiku comprend le wolof et répond
+  dans la même langue grâce au prompt système. \\
+\textbf{Exception E1}  &
+  E6. L'API Anthropic renvoie une erreur (quota, timeout) : le système affiche
+  «~Service temporairement indisponible~» et suggère de réessayer. \\
+\textbf{Exception E2}  &
+  E9. La boucle atteint 6 itérations sans \texttt{end\_turn} : la dernière réponse
+  partielle est renvoyée avec un avertissement. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+% =============================================================
+% CHAPITRE 4 — CONCEPTION
+% =============================================================
+\chapter{Conception du système}
+
+\section{Architecture logicielle}
+
+\subsection{Architecture en couches}
+
+\gc{} suit une architecture en couches strictement organisée qui sépare les
+responsabilités de présentation, de logique métier, de traitement asynchrone
+et de persistance~\cite{holovaty2009django}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.15cm]
+  \node[layerbox, fill=codeblue!15, draw=codeblue] (l1)
+    {Couche présentation : HTMX + Tailwind CSS + Alpine.js (47 templates)};
+  \node[layerbox, below=of l1] (l2)
+    {Couche Django (MVT) : 12 applications, vues, formulaires, décorateurs RBAC};
+  \node[layerbox, fill=gcor!10, draw=gcor, below=of l2] (l3)
+    {Services métier : TraductionService, ChatbotService, ScoreCrédit, RecommandationIA};
+  \node[layerbox, fill=orange!10, draw=orange!70, below=of l3] (l4)
+    {Couche async : Celery 5.4 (worker + beat) / Redis broker \& result backend};
+  \node[layerbox, fill=gcgris!15, draw=gcgris, below=of l4] (l5)
+    {Couche données : PostgreSQL (ORM Django) + Redis Cache (TTL 3600s)};
+  \node[layerbox, fill=gcgris!8, draw=gcgris!50, below=of l5] (l6)
+    {Services externes : Anthropic API · HuggingFace API · Twilio · Cloudinary};
+
+  % Arrows
+  \draw[<->, >=stealth, gcvert, thick] (l1.south) -- (l2.north);
+  \draw[<->, >=stealth, gcvert, thick] (l2.south) -- (l3.north);
+  \draw[->, >=stealth, gcor, thick]    (l3.south) -- (l4.north);
+  \draw[<->, >=stealth, gcgris, thick] (l4.south) -- (l5.north);
+  \draw[->, >=stealth, gcgris, thick]  (l3.south east) .. controls +(1.5,-0.5) and +(1.5,0.5) .. (l6.north east);
+\end{tikzpicture}
+\caption{Architecture en couches de \gc{}}
+\label{fig:architecture_couches}
+\end{figure}
+
+\subsection{Architecture des 12 applications Django}
+
+La figure~\ref{fig:composants} illustre les dépendances entre les 12 modules
+applicatifs. L'application \texttt{core} est le pivot central : elle définit
+les modèles \texttt{PrixMarche}, \texttt{RecommandationVente}, \texttt{Transaction}
+et \texttt{WarrantageCredit} qui sont référencés par la plupart des autres modules.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.6cm and 0.8cm,
+  appbox/.style={rectangle, rounded corners=3pt, draw=gcvert!70, fill=gcvert!10,
+    minimum width=2.4cm, minimum height=0.65cm, text centered, font=\footnotesize}]
+
+  % Row 1
+  \node[appbox, fill=codeblue!15, draw=codeblue] (accounts) {accounts};
+  \node[appbox, right=of accounts] (core)  {core};
+  \node[appbox, right=of core]     (silos) {silos};
+  \node[appbox, right=of silos]    (agri)  {agriculteurs};
+
+  % Row 2
+  \node[appbox, below=of accounts]          (notif)  {notifications};
+  \node[appbox, fill=gcor!15, draw=gcor, right=of notif] (warrant) {warrantage};
+  \node[appbox, right=of warrant] (marche) {marche};
+  \node[appbox, right=of marche]  (imf)    {imf};
+
+  % Row 3
+  \node[appbox, below=of notif]                       (admin)  {administration};
+  \node[appbox, fill=orange!15, draw=orange!70, right=of admin]  (intell) {intelligence};
+  \node[appbox, fill=orange!15, draw=orange!70, right=of intell] (tradc)  {traduction};
+  \node[appbox, fill=orange!15, draw=orange!70, right=of tradc]  (chat)   {chatbot};
+
+  % Key dependencies
+  \draw[->, >=stealth, gcgris!70] (agri)    -- (core);
+  \draw[->, >=stealth, gcgris!70] (warrant) -- (core);
+  \draw[->, >=stealth, gcgris!70] (marche)  -- (core);
+  \draw[->, >=stealth, gcgris!70] (imf)     -- (warrant);
+  \draw[->, >=stealth, gcgris!70] (silos)   -- (core);
+  \draw[->, >=stealth, gcgris!70] (notif)   -- (accounts);
+  \draw[->, >=stealth, gcgris!70] (intell)  -- (core);
+  \draw[->, >=stealth, gcgris!70] (intell)  -- (marche);
+  \draw[->, >=stealth, gcgris!70] (admin)   -- (core);
+  \draw[->, >=stealth, gcgris!70] (chat)    -- (core);
+  \draw[->, >=stealth, gcgris!70] (chat)    -- (accounts);
+\end{tikzpicture}
+\caption{Diagramme de composants : 12 applications Django et leurs dépendances}
+\label{fig:composants}
+\end{figure}
+
+\section{Modèle de données}
+
+\gc{} repose sur 16 entités persistées dans PostgreSQL via l'ORM Django,
+réparties dans les 12 applications métier. Les relations entre entités
+reflètent le cycle de vie complet du grain : dépôt, warrantage, vente et remboursement.
+
+\subsection{Entités principales et relations}
+
+Le modèle de données de \gc{} comporte 16 entités réparties dans les 12
+applications. Le tableau~\ref{tab:entites} liste les entités principales
+avec leur application d'appartenance et leurs attributs clés.
+
+\begin{table}[H]
+\centering
+\caption{Entités principales du modèle de données \gc{}}
+\label{tab:entites}
+\begin{tabular}{L{3cm}L{2.5cm}L{8cm}}
+\toprule
+\textbf{Entité} & \textbf{Application} & \textbf{Attributs clés} \\
+\midrule
+User            & accounts     & \texttt{telephone, role, is\_active, date\_inscription} \\
+ProfilAgriculteur & agriculteurs & \texttt{user(1-1), score\_credit, categorie\_risque, cultures\_principales(M2M)} \\
+Silo            & silos        & \texttt{nom, commune, capacite\_kg, statut, sante, temperature, humidite} \\
+Denree          & silos        & \texttt{nom, nom\_wolof, nom\_anglais, temp\_min/max, humidite\_max} \\
+Depot           & silos        & \texttt{agriculteur(FK), silo(FK), denree(FK), quantite\_kg, statut, numero\_recu} \\
+Retrait         & silos        & \texttt{depot(FK), quantite\_kg, type(RETRAIT/VENTE), date} \\
+AlerteSilo      & silos        & \texttt{silo(FK), type, niveau, valeur\_mesuree, acquittee} \\
+WarrantageCredit & core        & \texttt{depot(FK), imf(FK), montant\_demande, montant\_accorde, statut, score\_snapshot} \\
+IMFPartenaire   & core         & \texttt{nom, taux\_interet\_mensuel, delai\_traitement\_jours} \\
+PrixMarche      & core         & \texttt{denree(FK), region, prix\_kg\_fcfa, date\_releve} \\
+RecommandationVente & core     & \texttt{denree(FK), type(VENDRE/ATTENDRE), prix\_actuel, prix\_prevu} \\
+OffreAchat      & core         & \texttt{acheteur(FK), denree(FK), quantite\_kg, prix\_offert\_kg, statut} \\
+Transaction     & core         & \texttt{depot(FK), offre(FK), quantite\_kg, prix\_total, commission\_gc} \\
+HistoriqueTraduction & traduction & \texttt{user(FK), texte\_source, texte\_cible, langue\_source, langue\_cible, moteur} \\
+ConversationChat & chatbot     & \texttt{user(FK), messages(JSON), langue, created\_at} \\
+Commune         & silos        & \texttt{nom, region, departement} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Diagramme entité-association simplifié}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  ent/.style={rectangle, draw=gcvert, fill=gcvert!10, minimum width=2.4cm,
+    minimum height=0.7cm, text centered, font=\footnotesize\bfseries},
+  rel/.style={font=\tiny, midway, above, gcgris},
+  card/.style={font=\tiny\itshape, gcgris}
+]
+  % User cluster
+  \node[ent] (user)  at (0,0)    {User};
+  \node[ent] (profil) at (3,0)   {ProfilAgriculteur};
+  \node[ent] (depot) at (3,-2.5) {Dépôt};
+  \node[ent] (silo)  at (0,-2.5) {Silo};
+  \node[ent] (denree) at (6,-2.5){Denrée};
+  \node[ent] (warrant) at (3,-5) {WarrantageCredit};
+  \node[ent] (imf)   at (6,-5)   {IMFPartenaire};
+  \node[ent] (prix)  at (0,-5)   {PrixMarche};
+  \node[ent] (offre) at (6,0)    {OffreAchat};
+  \node[ent] (trans) at (9,-2.5) {Transaction};
+  \node[ent] (alerte) at (-3,-2.5){AlerteSilo};
+  \node[ent] (reco)  at (-3,-5)  {RecommandationVente};
+
+  % Relations
+  \draw[gcvert!60] (user) -- node[rel] {1..1} (profil);
+  \draw[gcvert!60] (profil) -- node[rel] {1..*} (depot);
+  \draw[gcvert!60] (silo) -- node[rel] {*} (depot);
+  \draw[gcvert!60] (denree) -- node[rel] {*} (depot);
+  \draw[gcvert!60] (depot) -- node[rel] {0..*} (warrant);
+  \draw[gcvert!60] (imf) -- node[rel] {*} (warrant);
+  \draw[gcvert!60] (denree) -- node[rel] {*} (prix);
+  \draw[gcvert!60] (user) -- node[rel] {*} (offre);
+  \draw[gcvert!60] (depot) -- node[rel] {0..1} (trans);
+  \draw[gcvert!60] (offre) -- node[rel] {*} (trans);
+  \draw[gcvert!60] (silo) -- node[rel] {*} (alerte);
+  \draw[gcvert!60] (denree) -- node[rel] {*} (reco);
+\end{tikzpicture}
+\caption{Diagramme entité-association (entités principales)}
+\label{fig:erd}
+\end{figure}
+
+\section{Diagramme de classes UML}
+
+\subsection{Hiérarchie des modèles utilisateurs}
+
+La hiérarchie d'héritage des modèles utilisateurs constitue l'épine dorsale
+du RBAC. Le modèle \texttt{User} personnalisé hérite de \texttt{AbstractBaseUser}
+et de \texttt{PermissionsMixin}, et chaque rôle possède un modèle de profil
+distinct en relation \texttt{OneToOneField}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  cls/.style={rectangle, draw=gcgris, fill=white, text width=4.5cm,
+    minimum height=0.5cm, font=\footnotesize},
+  clstitle/.style={fill=gcvert!20, font=\footnotesize\bfseries, text centered,
+    minimum height=0.55cm},
+  inherit/.style={-open triangle 45, thick, gcgris}
+]
+  % AbstractBaseUser
+  \node[cls, clstitle, minimum width=4.6cm] (abstr_t) at (6,0) {AbstractBaseUser};
+  \node[cls, below=0pt of abstr_t, text width=4.4cm] (abstr_b)
+    {\texttt{password, last\_login}\\[2pt]\texttt{check\_password()}\\[1pt]\texttt{set\_password()}};
+
+  % User
+  \node[cls, clstitle, minimum width=4.6cm] (user_t) at (6,-2.4) {\textbf{User}};
+  \node[cls, below=0pt of user_t, text width=4.4cm] (user_b)
+    {\texttt{telephone : str}\\
+     \texttt{role : CharField}\\
+     \texttt{nom\_complet : str}\\
+     \texttt{region : str}\\
+     \texttt{date\_inscription : date}\\[3pt]
+     \texttt{get\_profil()}\\
+     \texttt{is\_agriculteur()}};
+
+  % Inheritance
+  \draw[inherit] (user_t.north) -- (abstr_t.south);
+
+  % ProfilAgriculteur
+  \node[cls, clstitle, minimum width=4cm] (profil_t) at (0,-5.5) {ProfilAgriculteur};
+  \node[cls, below=0pt of profil_t, text width=3.8cm] (profil_b)
+    {\texttt{user : User (1-1)}\\
+     \texttt{score\_credit : int}\\
+     \texttt{categorie\_risque}\\
+     \texttt{cultures : M2M}\\[3pt]
+     \texttt{calculer\_score()}};
+
+  % ProfilGestionnaire
+  \node[cls, clstitle, minimum width=4cm] (gest_t) at (5,-5.5) {ProfilGestionnaire};
+  \node[cls, below=0pt of gest_t, text width=3.8cm] (gest_b)
+    {\texttt{user : User (1-1)}\\
+     \texttt{silo\_gere : Silo (FK)}\\
+     \texttt{certifie : bool}};
+
+  % ProfilIMF
+  \node[cls, clstitle, minimum width=4cm] (imfp_t) at (9.8,-5.5) {ProfilIMF};
+  \node[cls, below=0pt of imfp_t, text width=3.8cm] (imfp_b)
+    {\texttt{user : User (1-1)}\\
+     \texttt{imf : IMFPartenaire (FK)}\\
+     \texttt{peut\_approuver : bool}};
+
+  % 1-1 relations
+  \draw[gcgris, dashed, ->] (profil_t.north) -- (user_b.south west);
+  \draw[gcgris, dashed, ->] (gest_t.north) -- (user_b.south);
+  \draw[gcgris, dashed, ->] (imfp_t.north) -- (user_b.south east);
+
+  % Labels
+  \node[font=\tiny, gcgris] at (1.2,-4.8) {1..1};
+  \node[font=\tiny, gcgris] at (5.3,-4.8) {1..1};
+  \node[font=\tiny, gcgris] at (9.0,-4.8) {1..1};
+\end{tikzpicture}
+\caption{Diagramme de classes UML --- Hiérarchie utilisateurs}
+\label{fig:classes_users}
+\end{figure}
+
+\subsection{Classes métier principales}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  cls/.style={rectangle, draw=gcgris, fill=white, text width=3.8cm, font=\footnotesize},
+  clstitle/.style={fill=gcor!20, font=\footnotesize\bfseries, text centered, minimum height=0.55cm},
+  assoc/.style={gcgris!70, ->}
+]
+  % Depot
+  \node[cls, clstitle, minimum width=3.9cm] (dep_t) at (0,0) {Dépôt};
+  \node[cls, below=0pt of dep_t] (dep_b)
+    {\texttt{agriculteur : FK}\\
+     \texttt{silo : FK}\\
+     \texttt{denree : FK}\\
+     \texttt{quantite\_kg : DecField}\\
+     \texttt{prix\_unitaire : DecField}\\
+     \texttt{statut : choices}\\
+     \texttt{numero\_recu : str}\\[3pt]
+     \texttt{valeur\_estimee\_fcfa}\\
+     \texttt{montant\_warrantable}};
+
+  % WarrantageCredit
+  \node[cls, clstitle, minimum width=3.9cm] (war_t) at (5.5,0) {WarrantageCredit};
+  \node[cls, below=0pt of war_t] (war_b)
+    {\texttt{depot : FK}\\
+     \texttt{imf : FK}\\
+     \texttt{montant\_demande : Dec}\\
+     \texttt{montant\_accorde : Dec}\\
+     \texttt{taux\_interet : Dec}\\
+     \texttt{duree\_mois : int}\\
+     \texttt{score\_snapshot : int}\\
+     \texttt{statut : choices}\\
+     \texttt{mode\_paiement}\\[3pt]
+     \texttt{montant\_remboursement()}};
+
+  % Silo
+  \node[cls, clstitle, minimum width=3.9cm] (sil_t) at (11,0) {Silo};
+  \node[cls, below=0pt of sil_t] (sil_b)
+    {\texttt{nom : str}\\
+     \texttt{commune : FK}\\
+     \texttt{capacite\_kg : Dec}\\
+     \texttt{temperature : Dec}\\
+     \texttt{humidite : Dec}\\
+     \texttt{statut : choices}\\
+     \texttt{sante : choices}\\[3pt]
+     \texttt{taux\_remplissage()}\\
+     \texttt{capacite\_disponible()}};
+
+  % Transaction
+  \node[cls, clstitle, minimum width=3.9cm] (tra_t) at (0,-5.5) {Transaction};
+  \node[cls, below=0pt of tra_t] (tra_b)
+    {\texttt{depot : FK}\\
+     \texttt{offre : FK}\\
+     \texttt{quantite\_kg : Dec}\\
+     \texttt{prix\_total : Dec}\\
+     \texttt{commission\_gc : Dec}\\
+     \texttt{date\_transaction}\\[3pt]
+     \texttt{calculer\_commission()}};
+
+  % PrixMarche
+  \node[cls, clstitle, minimum width=3.9cm] (prix_t) at (5.5,-5.5) {PrixMarche};
+  \node[cls, below=0pt of prix_t] (prix_b)
+    {\texttt{denree : FK}\\
+     \texttt{region : str}\\
+     \texttt{prix\_kg\_fcfa : Dec}\\
+     \texttt{source : str}\\
+     \texttt{date\_releve : date}};
+
+  % Relations
+  \draw[assoc] (war_t.west) -- node[above, font=\tiny] {depot\_FK} (dep_t.east);
+  \draw[assoc] (dep_t.south) -- (tra_t.north);
+  \draw[assoc] (dep_t.east) -- (sil_t.west) node[above, font=\tiny, midway] {silo\_FK};
+\end{tikzpicture}
+\caption{Diagramme de classes UML --- Classes métier principales}
+\label{fig:classes_metier}
+\end{figure}
+
+\section{Conception du workflow WarrantageCredit}
+
+Le cycle de vie d'un dossier \texttt{WarrantageCredit} suit une machine à états
+à 7 statuts, dont les transitions sont contrôlées par les vues Django et les
+permissions RBAC.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  st/.style={rectangle, rounded corners=3pt, draw=gcvert!70, fill=gcvert!12,
+    minimum width=2.2cm, minimum height=0.65cm, text centered, font=\footnotesize\bfseries},
+  tr/.style={->, >=stealth, thick, gcgris},
+  lbl/.style={font=\tiny, gcgris, fill=white}
+]
+  \node[st] (soumis)  at (0,0)     {SOUMIS};
+  \node[st] (instr)   at (4,0)     {EN\_INSTRUCTION};
+  \node[st, fill=colapprouve!20, draw=colapprouve] (appr) at (8,1.2)  {APPROUVÉ};
+  \node[st, fill=colrefuse!20,   draw=colrefuse]   (refu) at (8,-1.2) {REFUSÉ};
+  \node[st, fill=codeblue!20, draw=codeblue]       (vire) at (12,1.2) {VIRÉ};
+  \node[st, fill=colapprouve!20, draw=colapprouve] (remb) at (12,-0.5){REMBOURSÉ};
+  \node[st, fill=coldefaut!20,   draw=coldefaut]   (defa) at (12,-2.2){EN\_DÉFAUT};
+
+  \draw[tr] (soumis) -- node[lbl, above] {Admin GC transmet} (instr);
+  \draw[tr] (instr)  -- node[lbl, above, sloped] {IMF approuve} (appr);
+  \draw[tr] (instr)  -- node[lbl, below, sloped] {IMF refuse} (refu);
+  \draw[tr] (appr)   -- node[lbl, above] {Virement effectué} (vire);
+  \draw[tr] (vire)   -- node[lbl, right, sloped] {Remboursement} (remb);
+  \draw[tr] (vire)   -- node[lbl, right, sloped] {Impayé} (defa);
+\end{tikzpicture}
+\caption{Machine à états du modèle \texttt{WarrantageCredit} (7 statuts)}
+\label{fig:statuts_warrantage}
+\end{figure}
+
+\section{Conception UI/UX}
+
+\subsection{Système de design}
+
+\gc{} utilise Tailwind CSS~\cite{tailwindcss2024docs} avec une palette de
+couleurs et une typographie cohérentes sur l'ensemble de la plateforme.
+
+\begin{table}[H]
+\centering
+\caption{Système de design \gc{}}
+\label{tab:design}
+\begin{tabular}{L{3.5cm}L{4cm}L{6cm}}
+\toprule
+\textbf{Élément} & \textbf{Valeur} & \textbf{Usage} \\
+\midrule
+Couleur primaire  & \texttt{\#287850} (gcvert) & Entêtes, boutons CTA, liens actifs \\
+Couleur secondaire & \texttt{\#C89620} (gcor)  & Badges, alertes moyennes, CTA secondaires \\
+Couleur erreur    & \texttt{\#DC2626} & Alertes rouges, statuts EN\_DÉFAUT \\
+Couleur succès    & \texttt{\#16A34A} & Validations, statuts REMBOURSÉ \\
+Police principale & Inter (Google Fonts)       & Corps de texte, interface \\
+Police titres     & Poppins (Google Fonts)     & Titres h1--h3, dashboard cards \\
+Direction texte   & LTR par défaut, RTL (arabe) & Bascule automatique par langue \\
+Breakpoints       & sm:640px, md:768px, lg:1024px & Responsive sidebar, grilles \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Principes de navigation}
+
+La navigation est organisée autour d'une sidebar gauche rétractable, gérée
+par Alpine.js avec persistance dans le \texttt{localStorage}. Sur les écrans
+inférieurs à 1024px, la sidebar se transforme en tiroir modal.
+
+La règle des trois clics est respectée : toute action critique (déposer,
+demander un warrantage, contacter une IMF) est accessible en trois clics
+maximum depuis le dashboard du rôle concerné.
+
+\subsection{Accessibilité et internationalisation}
+
+Les quatre langues supportées (FR, EN, WO, AR) utilisent le système i18n
+de Django avec l'\texttt{i18n\_patterns} et le préfixe de langue dans l'URL
+(\texttt{/fr/}, \texttt{/en/}, \texttt{/wo/}, \texttt{/ar/}), y compris
+pour le français (\texttt{prefix\_default\_language=True}). La direction
+du texte est automatiquement basculée en RTL pour l'arabe via une classe
+CSS conditionnelle sur la balise \texttt{<html>}.
+
+% =============================================================
+% CHAPITRE 5 — IMPLÉMENTATION TECHNIQUE
+% =============================================================
+\chapter{Implémentation technique}
+
+\section{Structure du projet Django}
+
+\subsection{Organisation des fichiers}
+
+Le projet \gc{} suit la convention Django recommandée pour les projets
+de grande envergure~\cite{holovaty2009django,django2024docs}, avec une
+séparation nette entre la configuration (\texttt{config/}), les applications
+(\texttt{apps/}) et les templates (\texttt{templates/}).
+
+\begin{lstlisting}[style=bashstyle, caption={Arborescence du projet \gc{}}]
+grenier_commun/
+|-- config/
+|   |-- settings.py       # Configuration centrale (production-ready)
+|   |-- urls.py           # URLs racines avec i18n_patterns
+|   |-- celery.py         # Configuration Celery
+|   `-- wsgi.py
+|-- apps/
+|   |-- accounts/         # Auth : AbstractBaseUser + 5 roles
+|   |-- core/             # Modeles pivot : Depot, WarrantageCredit...
+|   |-- silos/            # Silos, Denrees, Alertes
+|   |-- agriculteurs/     # Profil + dashboard agriculteur
+|   |-- warrantage/       # Workflow warrantage
+|   |-- marche/           # Prix marche + offres achat
+|   |-- imf/              # Interface IMF
+|   |-- notifications/    # Notifications in-app + SMS
+|   |-- traduction/       # Service NLLB-200 + historique
+|   |-- intelligence/     # Taches Celery IA
+|   |-- administration/   # Dashboard admin GC
+|   `-- chatbot/          # Claude Haiku + 15 outils
+|-- templates/            # 47 templates HTML (Tailwind + HTMX)
+|-- static/               # CSS compiles, JS, images
+|-- requirements.txt      # 40+ dependances versionnees
+|-- Procfile              # web: gunicorn, worker: celery, beat: celery
+`-- manage.py
+\end{lstlisting}
+
+\subsection{Configuration \texttt{settings.py}}
+
+La configuration de production utilise \texttt{python-decouple} pour
+isoler les secrets dans les variables d'environnement, conformément
+aux bonnes pratiques de sécurité~\cite{owasp2021top10}.
+
+\begin{lstlisting}[style=pythonstyle, caption={Extrait de \texttt{config/settings.py} --- constantes métier}]
+# Parametres financiers Grenier Commun
+GC_TAUX_LOCATION_MENSUEL   = 0.015  # 1.5% du stock/mois
+GC_TAUX_WARRANTAGE         = 0.70   # 70% de la valeur warrantable
+GC_COMMISSION_VENTE        = 0.02   # 2% par transaction de vente
+GC_COMMISSION_WARRANTAGE   = 0.015  # 1.5% par credit warrantage accorde
+GC_DUREE_MAX_STOCKAGE_JOURS = 180   # 6 mois max en silo
+GC_SMS_LANGUE_DEFAUT       = 'fr'
+
+# Cache Redis
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': REDIS_URL,
+        'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
+        'TIMEOUT': 3600,           # 1h par defaut
+    }
+}
+
+# Sessions stockees dans Redis
+SESSION_ENGINE       = 'django.contrib.sessions.backends.cache'
+SESSION_COOKIE_AGE   = 86400      # 24h
+SESSION_COOKIE_SECURE = not DEBUG
+\end{lstlisting}
+\vspace{-6pt}
+\section{Service de traduction multilingue}
+\label{sec:service_traduction}
+
+\subsection{Architecture du service}
+
+Le service de traduction est implementé dans \texttt{apps/traduction/services.py}.
+Il implémente un pattern \emph{Chain of Responsibility} avec trois moteurs
+en cascade : NLLB-200 (prioritaire pour le wolof), Google Translate (repli
+pour FR/EN/AR), et retour du texte original en dernier recours.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.5cm]
+  \node[flowbox, fill=codeblue!15, draw=codeblue, minimum width=6cm] (req)
+    {Requête : (texte, src, tgt)};
+  \node[flowdec, below=of req] (is_cache) {Cache\\Redis?};
+  \node[flowbox, right=2.5cm of is_cache] (cache_hit) {Retourner valeur\\(TTL 24h)};
+  \node[flowdec, below=of is_cache] (is_wolof) {Wolof\\impliqué?};
+  \node[flowbox, right=2.5cm of is_wolof, fill=gcor!15, draw=gcor] (nllb)
+    {HuggingFace API\\NLLB-200-600M};
+  \node[flowdec, below=of is_wolof] (nllb_ok) {NLLB\\succès?};
+  \node[flowbox, right=2.5cm of nllb_ok] (google)
+    {deep-translator\\GoogleTranslate};
+  \node[flowdec, below=of nllb_ok] (google_ok) {Google\\succès?};
+  \node[flowbox, right=2.5cm of google_ok] (fallback)
+    {Texte original\\(fallback)};
+  \node[flowbox, below=of google_ok, fill=gcvert!15, draw=gcvert] (save)
+    {Sauvegarder cache\\+ HistoriqueTraduction};
+
+  \draw[->, >=stealth, gcvert] (req) -- (is_cache);
+  \draw[->, >=stealth, gcvert] (is_cache) -- node[right, font=\tiny] {Non} (is_wolof);
+  \draw[->, >=stealth, gcvert] (is_cache) -- node[above, font=\tiny] {Oui} (cache_hit);
+  \draw[->, >=stealth, gcvert] (is_wolof) -- node[above, font=\tiny] {Oui} (nllb);
+  \draw[->, >=stealth, gcvert] (is_wolof) -- node[right, font=\tiny] {Non} (nllb_ok);
+  \draw[->, >=stealth, gcvert] (nllb) -- (nllb_ok);
+  \draw[->, >=stealth, gcvert] (nllb_ok) -- node[above, font=\tiny] {Échec} (google);
+  \draw[->, >=stealth, gcvert] (nllb_ok) -- node[right, font=\tiny] {Succès} (save);
+  \draw[->, >=stealth, gcvert] (google) -- (google_ok);
+  \draw[->, >=stealth, gcvert] (google_ok) -- node[above, font=\tiny] {Échec} (fallback);
+  \draw[->, >=stealth, gcvert] (google_ok) -- node[right, font=\tiny] {Succès} (save);
+  \draw[->, >=stealth, gcvert] (fallback) -- (save);
+\end{tikzpicture}
+\caption{Flux de décision du service de traduction (Chain of Responsibility)}
+\label{fig:flux_traduction}
+\end{figure}
+
+\subsection{Implémentation du service}
+
+\begin{lstlisting}[style=pythonstyle, caption={Service de traduction (\texttt{apps/traduction/services.py} --- extrait)}]
+import requests
+from django.core.cache import cache
+from deep_translator import GoogleTranslator
+
+NLLB_API_URL = "https://api-inference.huggingface.co/models/facebook/nllb-200-distilled-600M"
+
+NLLB_CODES = {
+    'fr': 'fra_Latn', 'en': 'eng_Latn',
+    'wo': 'wol_Latn', 'ar': 'arb_Arab',
+}
+
+def traduire(texte: str, src: str, tgt: str, user=None) -> dict:
+    """Traduit texte de src vers tgt avec fallback automatique."""
+    if src == tgt:
+        return {'texte': texte, 'moteur': 'identique'}
+
+    cache_key = f"trad:{src}:{tgt}:{hash(texte)}"
+    cached = cache.get(cache_key)
+    if cached:
+        return {'texte': cached, 'moteur': 'cache'}
+
+    # Moteur 1 : NLLB-200 si wolof implique
+    if 'wo' in (src, tgt):
+        resultat = _nllb_translate(texte, src, tgt)
+        if resultat:
+            cache.set(cache_key, resultat, 86400)   # TTL 24h
+            _sauvegarder_historique(user, texte, resultat, src, tgt, 'nllb')
+            return {'texte': resultat, 'moteur': 'nllb-200'}
+
+    # Moteur 2 : Google Translate (deep-translator, sans cle API)
+    try:
+        traduit = GoogleTranslator(source=src, target=tgt).translate(texte)
+        cache.set(cache_key, traduit, 86400)
+        _sauvegarder_historique(user, texte, traduit, src, tgt, 'google')
+        return {'texte': traduit, 'moteur': 'google'}
+    except Exception:
+        pass
+
+    # Fallback : texte original
+    return {'texte': texte, 'moteur': 'fallback'}
+
+
+def _nllb_translate(texte, src, tgt):
+    hf_token = settings.HUGGINGFACE_API_KEY
+    headers = {"Authorization": f"Bearer {hf_token}"}
+    payload = {
+        "inputs": texte,
+        "parameters": {
+            "src_lang": NLLB_CODES.get(src, src),
+            "tgt_lang": NLLB_CODES.get(tgt, tgt),
+        }
+    }
+    try:
+        r = requests.post(NLLB_API_URL, headers=headers,
+                          json=payload, timeout=10)
+        r.raise_for_status()
+        return r.json()[0]['translation_text']
+    except Exception:
+        return None
+\end{lstlisting}
+
+\section{Chatbot Claude Haiku avec \textit{tool\_use}}
+\label{sec:chatbot}
+
+\subsection{Architecture du chatbot}
+
+L'assistant conversationnel utilise le modèle \texttt{claude-haiku-4-5-20251001}
+d'Anthropic~\cite{anthropic2024claude,anthropic2024haiku} avec le mécanisme
+\emph{tool\_use} natif, qui permet au modèle de décider dynamiquement quels
+outils appeler pour répondre à une question~\cite{anthropic2024claude}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.4cm and 1.2cm]
+  \node[seqactor, minimum width=2.8cm] (usr) at (0,0)  {Utilisateur};
+  \node[seqactor, minimum width=2.8cm] (vue) at (4,0)  {Vue Django};
+  \node[seqactor, minimum width=2.8cm] (claude) at (8,0) {Claude Haiku};
+  \node[seqactor, minimum width=2.8cm] (db)  at (12,0) {Base de données};
+
+  % Lifelines
+  \foreach \x in {0,4,8,12}
+    \draw[dashed, gcgris!40] (\x,-0.35) -- (\x,-9.8);
+
+  % Messages
+  \draw[seqmsg] (0,-1.0) -- node[above,font=\tiny] {1. Question + langue + rôle} (4,-1.0);
+  \draw[seqmsg] (4,-1.8) -- node[above,font=\tiny] {2. build\_system\_prompt(user)} (4,-1.8);
+  \draw[seqmsg] (4,-2.5) -- node[above,font=\tiny] {3. POST \{messages, tools\}} (8,-2.5);
+  \draw[seqmsg] (8,-3.3) -- node[above,font=\tiny] {4. stop\_reason=tool\_use} (4,-3.3);
+  \draw[seqmsg] (4,-4.1) -- node[above,font=\tiny] {5. execute\_tool(name, args)} (12,-4.1);
+  \draw[seqret] (12,-4.8) -- node[above,font=\tiny] {6. QuerySet JSON} (4,-4.8);
+  \draw[seqmsg] (4,-5.6) -- node[above,font=\tiny] {7. POST \{messages + tool\_result\}} (8,-5.6);
+
+  % Loop annotation
+  \draw[gcor, dashed] (2.5,-3.0) rectangle (10.5,-6.4);
+  \node[font=\tiny\itshape, gcor] at (6.5,-2.9) {Boucle max 6 itérations};
+
+  \draw[seqmsg] (8,-7.2) -- node[above,font=\tiny] {8. stop\_reason=end\_turn} (4,-7.2);
+  \draw[seqret] (4,-8.0) -- node[above,font=\tiny] {9. Réponse en langue utilisateur} (0,-8.0);
+  \draw[seqmsg] (4,-8.8) -- node[above,font=\tiny] {10. Sauvegarder ConversationChat} (12,-8.8);
+\end{tikzpicture}
+\caption{Diagramme de séquence --- Chatbot Claude Haiku (cycle tool\_use)}
+\label{fig:seq_chatbot}
+\end{figure}
+
+\subsection{Construction du prompt système}
+
+\begin{lstlisting}[style=pythonstyle, caption={Extrait \texttt{build\_system\_prompt()} --- \texttt{apps/chatbot/views.py}}]
+def build_system_prompt(user) -> str:
+    role = user.role
+    langue_labels = {
+        'fr': 'francais', 'en': 'anglais',
+        'wo': 'wolof',    'ar': 'arabe'
+    }
+    langue = langue_labels.get(
+        getattr(user, 'langue_preferee', 'fr'), 'francais'
+    )
+
+    role_context = {
+        'AGRICULTEUR':   "un agriculteur senegalais consultant ses stocks, "
+                         "demandant des warrantages et les prix du marche.",
+        'GESTIONNAIRE':  "un gestionnaire de silo supervisant les depots et "
+                         "les alertes de conservation.",
+        'ACHETEUR':      "un acheteur professionnel cherchant des stocks.",
+        'IMF':           "un agent de microfinance instruisant "
+                         "des dossiers de warrantage.",
+        'ADMIN_GC':      "l'administrateur de la plateforme Grenier Commun avec "
+                         "acces complet aux donnees.",
+    }.get(role, "un utilisateur")
+
+    return f"""Tu es l'assistant IA de la plateforme Grenier Commun,
+une plateforme de gestion agricole senegalaise.
+Tu parles a {role_context}
+REGLE ABSOLUE : Reponds TOUJOURS en {langue}.
+Tu peux utiliser les outils pour acceder aux donnees reelles
+de la plateforme (stocks, prix, warrantages, alertes silos).
+Sois concis et adapte ton niveau de langage a l'utilisateur."""
+\end{lstlisting}
+
+\subsection{Les 15 outils métier}
+
+\begin{table}[H]
+\centering
+\caption{Les 15 outils \textit{tool\_use} du chatbot \gc{}}
+\label{tab:outils_chatbot}
+\begin{tabular}{L{4cm}L{4cm}L{6cm}}
+\toprule
+\textbf{Outil} & \textbf{Rôles autorisés} & \textbf{Description} \\
+\midrule
+\texttt{get\_mes\_stocks}          & AGRICULTEUR & Stocks actifs de l'agriculteur connecté \\
+\texttt{get\_prix\_marche}         & Tous        & Prix par denrée/région et tendance \\
+\texttt{get\_mes\_warrantages}     & AGRICULTEUR & Dossiers warrantage de l'agriculteur \\
+\texttt{get\_notifications}        & Tous        & Notifications non lues \\
+\texttt{get\_recommandations\_vente} & AGRICULTEUR & Recommandations IA VENDRE/ATTENDRE \\
+\texttt{calculer\_credit\_warrantage} & AGRICULTEUR & Simulation crédit pour un dépôt \\
+\texttt{get\_infos\_silo}          & GESTIONNAIRE & Informations et conditions d'un silo \\
+\texttt{get\_alertes\_silo}        & GESTIONNAIRE & Alertes actives pour les silos \\
+\texttt{get\_depots\_silo}         & GESTIONNAIRE & Dépôts actifs dans un silo \\
+\texttt{get\_dossiers\_imf}        & IMF         & File de dossiers warrantage à instruire \\
+\texttt{get\_stats\_admin}         & ADMIN\_GC   & KPIs globaux de la plateforme \\
+\texttt{get\_mes\_transactions}    & ACHETEUR    & Historique des transactions \\
+\texttt{get\_offres\_marche}       & ACHETEUR    & Offres d'achat actives \\
+\texttt{get\_profil}               & Tous        & Profil de l'utilisateur connecté \\
+\texttt{traduire\_texte}           & Tous        & Traduction via service NLLB-200 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Tâches Celery et intelligence prédictive}
+\label{sec:celery_tasks}
+
+Celery~\cite{celery2024docs} est utilisé avec Redis~\cite{redis2024docs}
+comme broker et backend de résultats pour gérer quatre catégories de tâches
+planifiées et à la demande.
+
+\subsection{Algorithme de score de crédit}
+
+\begin{lstlisting}[style=pythonstyle, caption={Tâche \texttt{calculer\_score\_credit()} --- \texttt{apps/intelligence/tasks.py}}]
+@shared_task
+def calculer_score_credit(profil_id: int) -> dict:
+    """Calcule le score de credit (0-100) d'un agriculteur."""
+    profil = ProfilAgriculteur.objects.get(pk=profil_id)
+    score = 50  # score de base
+
+    # Composante 1 : anciennete (max +15 pts)
+    anciennete_mois = (timezone.now().date()
+                       - profil.user.date_inscription).days // 30
+    score += min(anciennete_mois * 1.5, 15)
+
+    # Composante 2 : nombre de depots (max +15 pts)
+    nb_depots = Depot.objects.filter(agriculteur=profil).count()
+    score += min(nb_depots * 2, 15)
+
+    # Composante 3 : remboursements (max +20, min -20 pts)
+    warrantages = WarrantageCredit.objects.filter(depot__agriculteur=profil)
+    rembourses = warrantages.filter(statut='REMBOURSE').count()
+    defauts    = warrantages.filter(statut='EN_DEFAUT').count()
+    score += min(rembourses * 5, 20)
+    score -= defauts * 20
+
+    # Composante 4 : volume moyen stocke (+2 a +10 pts)
+    vol_moy = Depot.objects.filter(agriculteur=profil).aggregate(
+        m=Avg('quantite_kg'))['m'] or 0
+    score += min(max(int(vol_moy / 1000) * 2, 0), 10)
+
+    score = max(0, min(100, int(score)))
+
+    # Mise a jour du profil
+    profil.score_credit = score
+    profil.categorie_risque = (
+        'FAIBLE' if score >= 70 else
+        'MOYEN'  if score >= 40 else 'ELEVE'
+    )
+    profil.save(update_fields=['score_credit', 'categorie_risque'])
+    return {'user': str(profil.user), 'score': score}
+\end{lstlisting}
+
+\subsection{Tâche de surveillance des silos}
+
+\begin{lstlisting}[style=pythonstyle, caption={Tâche \texttt{verifier\_conditions\_silos()} --- exécutée chaque heure}]
+@shared_task
+def verifier_conditions_silos() -> dict:
+    """Verifie les conditions T/humidite de tous les silos actifs."""
+    alertes_generees = 0
+    silos = Silo.objects.filter(statut='ACTIF')
+    for silo in silos:
+        for depot in silo.depot_set.filter(statut='ACTIF'):
+            denree = depot.denree
+            # Verification temperature
+            if silo.temperature_celsius > denree.temperature_max:
+                delta = silo.temperature_celsius - denree.temperature_max
+                niveau = 'ROUGE' if delta > 5 else 'ORANGE'
+                AlerteSilo.objects.get_or_create(
+                    silo=silo, type='TEMPERATURE', acquittee=False,
+                    defaults={'niveau': niveau,
+                              'valeur_mesuree': silo.temperature_celsius}
+                )
+                alertes_generees += 1
+            # Verification humidite
+            if silo.humidite_pourcent > denree.humidite_max:
+                delta_pct = ((silo.humidite_pourcent - denree.humidite_max)
+                             / denree.humidite_max * 100)
+                niveau = 'ROUGE' if delta_pct > 15 else 'ORANGE'
+                AlerteSilo.objects.get_or_create(
+                    silo=silo, type='HUMIDITE', acquittee=False,
+                    defaults={'niveau': niveau,
+                              'valeur_mesuree': silo.humidite_pourcent}
+                )
+                alertes_generees += 1
+    return {'alertes_generees': alertes_generees}
+\end{lstlisting}
+
+\subsection{Planification des tâches}
+
+\begin{table}[H]
+\centering
+\caption{Tâches Celery planifiées dans \texttt{CELERY\_BEAT\_SCHEDULE}}
+\label{tab:celery_tasks}
+\begin{tabular}{L{4.5cm}L{2.5cm}L{3cm}L{3.5cm}}
+\toprule
+\textbf{Tâche} & \textbf{Fréquence} & \textbf{Déclencheur} & \textbf{Action} \\
+\midrule
+\texttt{generer\_recommandations\_vente} & Hebdomadaire & Beat (604800s) & Analyse prix 8 semaines, génère VENDRE/ATTENDRE \\
+\texttt{calculer\_score\_credit}         & À la demande & Vue Django     & Recalcule score + catégorie risque \\
+\texttt{verifier\_conditions\_silos}     & Horaire      & Beat (3600s)   & Alerte T°/humidité vs seuils denrée \\
+\texttt{calculer\_loyers\_stockage}      & Mensuel      & Beat (2592000s)& Facture 1.5\,\%/mois, SMS notification \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Frontend : HTMX, Tailwind CSS et Alpine.js}
+
+\subsection{Patterns HTMX}
+
+HTMX~\cite{htmx2024docs} est le moteur des mises à jour partielles de page.
+Les requêtes HTMX passent par l'attribut \texttt{hx-post} sur les formulaires,
+avec un token CSRF injecté via l'en-tête personnalisé
+\texttt{hx-headers='\{"X-CSRFToken": "..."\}'} défini sur le \texttt{<body>}.
+
+\begin{lstlisting}[style=htmlstyle, caption={Formulaire de traduction HTMX --- \texttt{templates/traduction/traduction.html} (extrait)}]
+<form hx-post="{% url 'traduction:traduire' %}"
+      hx-target="#resultat-traduction"
+      hx-swap="innerHTML"
+      hx-indicator="#spinner">
+  <textarea name="texte_source" rows="4"
+    class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-green-500"
+    placeholder="Entrez le texte a traduire..."></textarea>
+  <select name="langue_source" class="mt-2 border rounded p-2">
+    <option value="fr">Francais</option>
+    <option value="wo">Wolof</option>
+    <option value="en">English</option>
+    <option value="ar">Arabe</option>
+  </select>
+  <!-- Indicateur de chargement -->
+  <div id="spinner" class="htmx-indicator">
+    <svg class="animate-spin h-5 w-5 text-green-600" ...></svg>
+  </div>
+  <button type="submit" class="mt-3 bg-green-700 text-white px-6 py-2 rounded-lg">
+    Traduire
+  </button>
+</form>
+<div id="resultat-traduction" class="mt-4 p-4 bg-gray-50 rounded-lg"></div>
+\end{lstlisting}
+
+\subsection{Sidebar Alpine.js avec persistance}
+
+\begin{lstlisting}[style=htmlstyle, caption={Sidebar rétractable --- \texttt{templates/base.html} (extrait Alpine.js)}]
+<div x-data="{
+    sidebarOpen: false,
+    sidebarCollapsed: localStorage.getItem('gc_sidebar_collapsed') === 'true'
+  }"
+  class="flex h-screen bg-gray-100">
+
+  <!-- Sidebar desktop -->
+  <aside
+    :class="sidebarCollapsed ? 'w-16' : 'w-64'"
+    class="hidden lg:flex flex-col transition-all duration-300
+           bg-green-800 text-white fixed h-full z-10">
+
+    <!-- Bouton toggle -->
+    <button @click="sidebarCollapsed = !sidebarCollapsed;
+                    localStorage.setItem('gc_sidebar_collapsed',
+                    sidebarCollapsed)"
+            class="p-3 hover:bg-green-700 text-right">
+      <span x-show="!sidebarCollapsed">&#x2190;</span>
+      <span x-show="sidebarCollapsed">&#x2192;</span>
+    </button>
+
+    <!-- Logo -->
+    <div class="p-4 border-b border-green-700">
+      <span x-show="!sidebarCollapsed"
+            class="font-bold text-xl">Grenier Commun</span>
+      <span x-show="sidebarCollapsed" class="text-2xl">GC</span>
+    </div>
+
+    <!-- Navigation injectee par le bloc nav -->
+    {% block nav %}{% endblock %}
+  </aside>
+</div>
+\end{lstlisting}
+
+\section{Sécurité}
+
+\subsection{Contrôle d'accès basé sur les rôles}
+
+Le décorateur \texttt{@role\_required} protège chaque vue sensible.
+Il est défini dans \texttt{apps/accounts/decorators.py} et combine
+la vérification d'authentification et de rôle.
+
+\begin{lstlisting}[style=pythonstyle, caption={Décorateur \texttt{role\_required()} --- \texttt{apps/accounts/decorators.py}}]
+from functools import wraps
+from django.shortcuts import redirect
+
+def role_required(*roles):
+    """Restreint l'acces a une vue aux roles specifies."""
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapper(request, *args, **kwargs):
+            if not request.user.is_authenticated:
+                return redirect('accounts:connexion')
+            if request.user.role not in roles:
+                return redirect('core:acces_interdit')
+            return view_func(request, *args, **kwargs)
+        return wrapper
+    return decorator
+
+# Usage :
+@role_required('AGRICULTEUR', 'GESTIONNAIRE')
+def deposer_view(request):
+    ...
+\end{lstlisting}
+
+\subsection{Protection contre le bruteforce}
+
+\texttt{django-axes}~\cite{owasp2021top10} est configuré pour bloquer un
+compte après 5 tentatives de connexion échouées en moins de 30 minutes.
+Les en-têtes de sécurité HTTP (HSTS, CSP, X-Frame-Options, nosniff) sont
+activés en production via les paramètres Django standards.
+
+\section{Génération de PDF avec WeasyPrint}
+
+WeasyPrint convertit les templates HTML en PDF pour les reçus de dépôt
+et les rapports. Le template HTML utilise Tailwind CSS avec classes d'impression
+(\texttt{print:}) pour un rendu optimal.
+
+\begin{lstlisting}[style=pythonstyle, caption={Vue de génération de reçu PDF}]
+from weasyprint import HTML
+from django.template.loader import render_to_string
+
+def telecharger_recu_pdf(request, depot_id):
+    depot = get_object_or_404(Depot, pk=depot_id,
+                               agriculteur__user=request.user)
+    html_str = render_to_string('silos/recu_depot_pdf.html',
+                                {'depot': depot, 'request': request})
+    pdf_bytes = HTML(string=html_str,
+                     base_url=request.build_absolute_uri('/')).write_pdf()
+    response = HttpResponse(pdf_bytes, content_type='application/pdf')
+    response['Content-Disposition'] = (
+        f'attachment; filename="recu_{depot.numero_recu}.pdf"')
+    return response
+\end{lstlisting}
+
+% =============================================================
+% CHAPITRE 6 — TESTS ET VALIDATION
+% =============================================================
+\chapter{Tests et validation}
+
+\section{Stratégie de tests}
+
+\subsection{Pyramide de tests}
+
+La stratégie de tests de \gc{} suit la pyramide classique avec une
+emphase particulière sur les tests d'intégration, justifiée par la
+nature transactionnelle de la plateforme (calculs financiers, workflows
+de warrantage) où les erreurs de bout en bout ont un impact métier direct.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+  % Pyramid base (unitaires)
+  \fill[gcvert!20] (0,0) -- (8,0) -- (4,4.5) -- cycle;
+  \draw[gcvert, line width=1pt] (0,0) -- (8,0) -- (4,4.5) -- cycle;
+  \draw[gcvert!50, dashed] (0.9,1.5) -- (7.1,1.5);
+  \draw[gcvert!50, dashed] (2.2,3.0) -- (5.8,3.0);
+
+  % Labels
+  \node[font=\footnotesize\bfseries, gcvert] at (4,0.75) {Tests unitaires};
+  \node[font=\tiny, gcgris] at (4,0.4) {58 tests · pytest · factory-boy · 75\,\%+ couverture};
+  \node[font=\footnotesize\bfseries, gcvert] at (4,2.25) {Tests d'intégration};
+  \node[font=\tiny, gcgris] at (4,1.9) {24 tests · Django TestClient · DB réelle};
+  \node[font=\footnotesize\bfseries, gcvert] at (4,3.6) {Tests E2E};
+  \node[font=\tiny, gcgris] at (4,3.3) {8 scénarios · Selenium};
+
+  % Annotations
+  \node[right, font=\tiny, gcgris] at (8.2,0.75) {Rapide, isolé};
+  \node[right, font=\tiny, gcgris] at (7.2,2.25) {Workflow complet};
+  \node[right, font=\tiny, gcgris] at (5.9,3.60) {Interface};
+\end{tikzpicture}
+\caption{Pyramide de tests \gc{} (90 tests au total)}
+\label{fig:pyramide_tests}
+\end{figure}
+
+\section{Tests unitaires}
+
+\subsection{Tests du service de traduction}
+
+Les tests du service de traduction utilisent \texttt{unittest.mock} pour
+simuler les réponses des APIs HuggingFace et Google Translate, afin d'isoler
+la logique de fallback sans dépendre de services externes.
+
+\begin{lstlisting}[style=pythonstyle, caption={Tests unitaires du service de traduction}]
+from unittest.mock import patch, Mock
+from django.test import TestCase
+from apps.traduction.services import traduire
+
+class TraductionServiceTests(TestCase):
+
+    def test_meme_langue_retourne_texte_original(self):
+        result = traduire("Bonjour", "fr", "fr")
+        self.assertEqual(result['texte'], "Bonjour")
+        self.assertEqual(result['moteur'], 'identique')
+
+    @patch('apps.traduction.services.requests.post')
+    def test_nllb_utilise_pour_wolof(self, mock_post):
+        mock_post.return_value = Mock(
+            status_code=200,
+            json=lambda: [{'translation_text': 'Jaamarek'}]
+        )
+        result = traduire("Bonjour", "fr", "wo")
+        self.assertEqual(result['texte'], 'Jaamarek')
+        self.assertEqual(result['moteur'], 'nllb-200')
+
+    @patch('apps.traduction.services.requests.post',
+           side_effect=Exception("Timeout"))
+    @patch('apps.traduction.services.GoogleTranslator.translate',
+           return_value="Good morning")
+    def test_fallback_google_si_nllb_echoue(self, mock_google, mock_nllb):
+        result = traduire("Bonjour", "fr", "en")
+        self.assertEqual(result['moteur'], 'google')
+
+    @patch('apps.traduction.services.requests.post',
+           side_effect=Exception("Timeout"))
+    @patch('apps.traduction.services.GoogleTranslator.translate',
+           side_effect=Exception("Quota exceeded"))
+    def test_fallback_texte_original_si_tout_echoue(self, *mocks):
+        result = traduire("Bonjour", "fr", "wo")
+        self.assertEqual(result['texte'], "Bonjour")
+        self.assertEqual(result['moteur'], 'fallback')
+\end{lstlisting}
+
+\subsection{Tests du calcul de score de crédit}
+
+\begin{lstlisting}[style=pythonstyle, caption={Tests du score de crédit avec factory-boy}]
+import factory
+from django.test import TestCase
+from apps.accounts.models import User
+from apps.intelligence.tasks import calculer_score_credit
+
+class UserFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = User
+    telephone = factory.Sequence(lambda n: f'+2217{n:08d}')
+    role = 'AGRICULTEUR'
+
+class ScoreCreditTests(TestCase):
+
+    def setUp(self):
+        self.user = UserFactory()
+        self.profil = ProfilAgriculteur.objects.create(user=self.user)
+
+    def test_score_base_sans_historique(self):
+        result = calculer_score_credit(self.profil.pk)
+        self.assertGreaterEqual(result['score'], 50)
+        self.assertLessEqual(result['score'], 100)
+
+    def test_defaut_penalise_score(self):
+        # Creer un warrantage en defaut
+        depot = DepotFactory(agriculteur=self.profil)
+        WarrantageCredit.objects.create(
+            depot=depot, statut='EN_DEFAUT',
+            montant_demande=50000)
+        result = calculer_score_credit(self.profil.pk)
+        self.assertLess(result['score'], 50)
+\end{lstlisting}
+
+\section{Tests d'intégration}
+
+Les tests d'intégration utilisent \texttt{Django TestClient} avec une
+base de données SQLite en mémoire (en tests) ou PostgreSQL (en CI).
+Le workflow complet du warrantage est couvert par un test de bout en bout.
+
+\begin{lstlisting}[style=pythonstyle, caption={Test d'intégration --- Workflow warrantage complet}]
+class WarrantageWorkflowTests(TestCase):
+
+    def setUp(self):
+        # Creer les acteurs
+        self.agriculteur = UserFactory(role='AGRICULTEUR')
+        self.admin_gc    = UserFactory(role='ADMIN_GC')
+        self.imf_user    = UserFactory(role='IMF')
+        self.imf = IMFPartenaire.objects.create(
+            nom="Baobab Finance", taux_interet_mensuel=Decimal('0.02'))
+        self.depot = DepotFactory(
+            agriculteur=self.agriculteur.profilagriculteur)
+
+    def test_workflow_complet_warrantage(self):
+        # Etape 1 : Agriculteur soumet demande
+        self.client.force_login(self.agriculteur)
+        response = self.client.post('/fr/warrantage/nouvelle-demande/', {
+            'depot': self.depot.pk,
+            'montant_demande': 50000,
+        })
+        self.assertEqual(response.status_code, 302)
+        dossier = WarrantageCredit.objects.get(depot=self.depot)
+        self.assertEqual(dossier.statut, 'SOUMIS')
+
+        # Etape 2 : Admin GC transmet a l'IMF
+        self.client.force_login(self.admin_gc)
+        self.client.post(f'/fr/administration/warrantage/{dossier.pk}/transmettre/',
+                         {'imf': self.imf.pk})
+        dossier.refresh_from_db()
+        self.assertEqual(dossier.statut, 'EN_INSTRUCTION')
+
+        # Etape 3 : IMF approuve
+        self.client.force_login(self.imf_user)
+        self.client.post(f'/fr/imf/dossier/{dossier.pk}/decision/', {
+            'decision': 'APPROUVE',
+            'montant_accorde': 45000,
+        })
+        dossier.refresh_from_db()
+        self.assertEqual(dossier.statut, 'APPROUVE')
+        self.assertEqual(int(dossier.montant_accorde), 45000)
+\end{lstlisting}
+
+\section{Couverture de tests}
+
+\begin{table}[H]
+\centering
+\caption{Couverture de tests par module (\texttt{pytest-cov})}
+\label{tab:couverture}
+\begin{tabular}{L{4cm}C{2cm}C{2cm}C{2cm}C{2cm}}
+\toprule
+\textbf{Module} & \textbf{Lignes} & \textbf{Couvertes} & \textbf{Manquantes} & \textbf{Taux} \\
+\midrule
+apps/traduction  & 210 & 189 &  21 & 90\,\% \\
+apps/intelligence & 180 & 162 &  18 & 90\,\% \\
+apps/warrantage  & 320 & 275 &  45 & 86\,\% \\
+apps/chatbot     & 280 & 235 &  45 & 84\,\% \\
+apps/silos       & 450 & 370 &  80 & 82\,\% \\
+apps/accounts    & 195 & 158 &  37 & 81\,\% \\
+apps/marche      & 240 & 188 &  52 & 78\,\% \\
+apps/imf         & 165 & 128 &  37 & 78\,\% \\
+apps/agriculteurs & 210 & 160 &  50 & 76\,\% \\
+apps/notifications & 130 & 97 &  33 & 75\,\% \\
+apps/administration & 290 & 215 & 75 & 74\,\% \\
+apps/core        & 380 & 280 & 100 & 74\,\% \\
+\midrule
+\textbf{Total}   & \textbf{3050} & \textbf{2457} & \textbf{593} & \textbf{81\,\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Tests de performance}
+
+Les tests de charge sont réalisés avec Apache Bench (\texttt{ab}) contre
+l'environnement de staging Railway, en simulant 100 requêtes concurrentes
+sur les pages les plus sollicitées.
+
+\begin{table}[H]
+\centering
+\caption{Résultats des tests de performance (Railway staging, 100 req. concurrentes)}
+\label{tab:perf}
+\begin{tabular}{L{5cm}C{2cm}C{2cm}C{2cm}C{2cm}}
+\toprule
+\textbf{Endpoint} & \textbf{P50} & \textbf{P95} & \textbf{P99} & \textbf{SLA} \\
+\midrule
+\texttt{/fr/} (accueil public)               & 120ms & 380ms & 580ms & \checkmark \\
+\texttt{/fr/agriculteur/dashboard/}          & 210ms & 620ms & 820ms & \checkmark \\
+\texttt{/fr/traduction/traduire/} (NLLB)     & 890ms & 1.8s  & 2.4s  & \checkmark \\
+\texttt{/fr/chatbot/api/} (Claude Haiku)     & 650ms & 1.4s  & 2.1s  & \checkmark \\
+\texttt{/fr/marche/catalogue/} (avec filtres)& 180ms & 510ms & 720ms & \checkmark \\
+\texttt{/fr/imf/dashboard/} (dossiers)       & 240ms & 680ms & 950ms & \checkmark \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{infobox}[Objectifs de performance]
+Les SLA de performance fixés sont : P95 $<$ 800ms pour les pages Django,
+P95 $<$ 2s pour les appels aux services IA (NLLB-200, Claude Haiku).
+Tous les endpoints respectent ces objectifs grâce à la mise en cache Redis
+des traductions (TTL 24h) et des recommandations IA (TTL 1h).
+\end{infobox}
+
+% =============================================================
+% CHAPITRE 7 — DÉPLOIEMENT ET INFRASTRUCTURE
+% =============================================================
+\chapter{Déploiement et infrastructure}
+
+\section{Plateforme Railway}
+
+\gc{} est déployé sur Railway~\cite{railway2024docs}, une plateforme
+PaaS (\emph{Platform as a Service}) qui gère automatiquement le provisioning
+des conteneurs, la mise à l'échelle et les mises à jour zero-downtime.
+Railway a été choisi pour quatre raisons : (1) support natif Nixpacks pour
+Python/Django sans Dockerfile, (2) services managés PostgreSQL et Redis
+intégrés, (3) variables d'environnement sécurisées par projet, et (4)
+déploiement continu déclenché par push sur la branche \texttt{main}.
+
+\subsection{Diagramme de déploiement}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.5cm and 0.8cm, scale=0.87, transform shape]
+  \node[deploybox, fill=gray!15, draw=gray, minimum width=2.2cm] (inet) at (0,0) {Internet};
+  \draw[codeblue!50, line width=1.5pt, dashed, rounded corners=8pt] (1.8,-3.2) rectangle (12.5,1.2);
+  \node[font=\footnotesize\bfseries, codeblue] at (7.2,1.0) {Railway PaaS};
+  \node[deploybox, minimum width=3.0cm] (gunicorn) at (4,0) {Gunicorn\\Django App\\(web)};
+  \node[deploybox, fill=gcor!15, draw=gcor, minimum width=3.0cm] (worker) at (4,-2.2) {Celery Worker\\(worker)};
+  \node[deploybox, fill=gcor!15, draw=gcor, minimum width=3.0cm] (beat) at (8,-2.2) {Celery Beat\\(beat)};
+  \node[deploybox, fill=codeblue!20, draw=codeblue, minimum width=2.8cm] (pg) at (8,0) {PostgreSQL 16\\grenier\_commun};
+  \node[deploybox, fill=colrefuse!20, draw=colrefuse, minimum width=2.8cm] (redis) at (11.5,0) {Redis 7.x\\broker + cache};
+  \node[deploybox, fill=gcor!10, draw=gcor, minimum width=2.8cm] (cloud) at (11.5,-2.2) {Cloudinary\\(media)};
+  \node[deploybox, fill=gray!10, draw=gray!60, minimum width=2.8cm] (apis) at (-1.5,-2.2) {APIs externes:\\Anthropic · HF\\Twilio};
+  \draw[->, >=stealth, codeblue] (inet) -- node[above, font=\tiny] {HTTPS} (gunicorn);
+  \draw[<->, >=stealth, gcgris] (gunicorn) -- (pg);
+  \draw[<->, >=stealth, gcgris] (gunicorn) -- (redis);
+  \draw[->, >=stealth, gcgris] (worker) -- (redis);
+  \draw[->, >=stealth, gcgris] (beat) -- (redis);
+  \draw[->, >=stealth, gcgris] (worker) -- (pg);
+  \draw[->, >=stealth, gcgris] (gunicorn) -- (cloud);
+  \draw[->, >=stealth, gcgris] (gunicorn) -- (apis);
+  \draw[->, >=stealth, gcgris] (worker) -- (apis);
+\end{tikzpicture}
+\caption{Diagramme de déploiement \gc{} sur Railway}
+\label{fig:deploiement}
+\end{figure}
+
+\section{Configuration du déploiement}
+
+\subsection{Procfile}
+
+Le \texttt{Procfile} à la racine du projet définit trois types de processus
+Railway distincts.
+
+\begin{lstlisting}[style=bashstyle, caption={Procfile --- 3 processus Railway}]
+web:    gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2
+worker: celery -A config.celery worker --loglevel=info --concurrency 2
+beat:   celery -A config.celery beat   --loglevel=info
+\end{lstlisting}
+
+\subsection{Variables d'environnement de production}
+
+\begin{table}[H]
+\centering
+\caption{Variables d'environnement requises pour la production}
+\label{tab:env_vars}
+\begin{tabular}{L{5cm}L{8.5cm}}
+\toprule
+\textbf{Variable} & \textbf{Description} \\
+\midrule
+\texttt{SECRET\_KEY}          & Clé secrète Django (64 caractères aléatoires) \\
+\texttt{DEBUG}                & \texttt{false} en production \\
+\texttt{DATABASE\_URL}        & URL PostgreSQL Railway (injectée automatiquement) \\
+\texttt{REDIS\_URL}           & URL Redis Railway (injectée automatiquement) \\
+\texttt{ALLOWED\_HOSTS}       & Domaines autorisés (ex. \texttt{monapp.railway.app}) \\
+\texttt{ANTHROPIC\_API\_KEY}  & Clé API Anthropic pour Claude Haiku \\
+\texttt{HUGGINGFACE\_API\_KEY} & Token HuggingFace pour NLLB-200 \\
+\texttt{TWILIO\_ACCOUNT\_SID} & Identifiant Twilio pour SMS~\cite{twilio2024sms} \\
+\texttt{TWILIO\_AUTH\_TOKEN}  & Token d'authentification Twilio \\
+\texttt{TWILIO\_PHONE\_NUMBER} & Numéro émetteur des SMS \\
+\texttt{CLOUDINARY\_URL}      & URL d'accès Cloudinary~\cite{cloudinary2024docs} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Script de démarrage Railway}
+
+\begin{lstlisting}[style=bashstyle, caption={Séquence de démarrage Railway (Nixpacks)}]
+# Nixpacks detecte Python automatiquement et installe les dependances
+pip install -r requirements.txt
+
+# Post-build : collecte des fichiers statiques et migrations
+python manage.py collectstatic --noinput
+python manage.py migrate
+
+# Healthcheck endpoint (Railway verifie /health/ avant de router le trafic)
+# Defini dans config/urls.py :
+# path('health/', lambda r: HttpResponse('OK'), name='health')
+
+# Demarrage (web process)
+gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+\end{lstlisting}
+
+\section{Configuration de la sécurité en production}
+
+\begin{lstlisting}[style=pythonstyle, caption={Paramètres de sécurité production (\texttt{settings.py})}]
+if not DEBUG:
+    SECURE_HSTS_SECONDS           = 31536000  # 1 an
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD           = True
+    SECURE_SSL_REDIRECT           = True       # HTTPS obligatoire
+    CSRF_COOKIE_SECURE            = True
+    SESSION_COOKIE_SECURE         = True
+    SECURE_BROWSER_XSS_FILTER     = True
+    SECURE_CONTENT_TYPE_NOSNIFF   = True
+    X_FRAME_OPTIONS               = 'DENY'
+
+# Django-axes : brute force protection
+AXES_FAILURE_LIMIT         = 5          # 5 echecs max
+AXES_COOLOFF_TIME          = 0.5        # 30 minutes de blacklist
+AXES_LOCKOUT_TEMPLATE      = 'accounts/locked.html'
+AXES_RESET_ON_SUCCESS      = True
+
+# Rate limiting (django-ratelimit)
+RATELIMIT_ENABLE           = True
+RATELIMIT_DEFAULT          = '60/m'     # 60 requetes/minute par IP
+\end{lstlisting}
+
+\section{Internationalisation (i18n)}
+
+Le système i18n de Django est configuré avec quatre langues et le préfixe
+de langue obligatoire dans les URLs.
+
+\begin{lstlisting}[style=pythonstyle, caption={Configuration i18n (\texttt{config/urls.py})}]
+from django.conf.urls.i18n import i18n_patterns
+
+urlpatterns = [
+    path('gc-admin-secret/', admin.site.urls),
+    path('i18n/', include('django.conf.urls.i18n')),
+] + i18n_patterns(
+    path('', include('apps.core.urls')),
+    path('auth/', include('apps.accounts.urls')),
+    path('agriculteur/', include('apps.agriculteurs.urls')),
+    path('gestionnaire/', include('apps.silos.urls')),
+    path('marche/', include('apps.marche.urls')),
+    path('imf/', include('apps.imf.urls')),
+    path('administration/', include('apps.administration.urls')),
+    path('warrantage/', include('apps.warrantage.urls')),
+    path('traduction/', include('apps.traduction.urls')),
+    path('chatbot/', include('apps.chatbot.urls')),
+    path('notifications/', include('apps.notifications.urls')),
+    prefix_default_language=True,    # /fr/ obligatoire meme pour le francais
+)
+\end{lstlisting}
+
+Les fichiers de traduction sont générés avec \texttt{django-admin makemessages}
+pour chaque locale (\texttt{locale/fr/LC\_MESSAGES/django.po},
+\texttt{locale/wo/LC\_MESSAGES/django.po}, etc.) et compilés avec
+\texttt{compilemessages}. Le wolof est intégré via des fichiers \texttt{.po}
+édités manuellement avec l'aide de locuteurs natifs.
+
+% =============================================================
+% CHAPITRE 8 — INTERFACES UTILISATEUR
+% =============================================================
+\chapter{Interfaces utilisateur}
+
+\section{Page d'accueil publique}
+
+La page d'accueil est accessible sans authentification. Elle présente le
+service en trois sections : un hero avec statistiques dynamiques, une
+section explicative du fonctionnement, et un appel à l'action pour
+l'inscription. Les statistiques (nombre d'agriculteurs inscrits, volume
+total stocké, silos partenaires) sont calculées dynamiquement par la vue
+\texttt{index\_view} à partir des requêtes agrégées sur la base de données.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/accueil_publique.png}
+\caption{Page d'accueil publique de \gc{} --- hero section avec statistiques dynamiques et section «~Comment ça marche~»}
+\label{fig:screen_accueil}
+\end{figure}
+
+\section{Authentification}
+
+L'authentification utilise le numéro de téléphone comme identifiant principal,
+un choix motivé par le fait que tous les agriculteurs sénégalais possèdent un
+téléphone mobile même s'ils n'ont pas d'adresse email. Une vérification OTP
+par SMS (Twilio) est proposée lors de l'inscription pour valider le numéro.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/connexion_inscription.png}
+\caption{Formulaire de connexion avec identification par numéro de téléphone}
+\label{fig:screen_connexion}
+\end{figure}
+
+\section{Dashboard de l'Agriculteur}
+
+Le dashboard agriculteur est la page la plus fréquentée de la plateforme.
+Il synthétise en un seul écran les quatre informations clés : stocks actifs,
+valeur totale estimée, crédit disponible via warrantage, et score de crédit.
+Les KPI cards utilisent des couleurs sémantiques (vert pour positif, orange
+pour attention, rouge pour alerte).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/dashboard_agriculteur.png}
+\caption{Dashboard agriculteur --- KPI cards, liste des dépôts, recommandations IA et sidebar rétractable}
+\label{fig:screen_dashboard_agri}
+\end{figure}
+
+\section{Détail d'un dépôt agriculteur}
+
+La page de détail d'un dépôt affiche toutes les informations du stock :
+denrée, quantité, silo, conditions de conservation, valeur estimée calculée
+à partir des prix du marché, et le montant warrantable. Si le dépôt est
+au statut ACTIF, un bouton «~Demander un warrantage~» permet de lancer
+le workflow en deux clics.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/detail_depot_agriculteur.png}
+\caption{Détail d'un dépôt --- numéro de reçu, informations du stock et bouton de demande warrantage}
+\label{fig:screen_detail_depot}
+\end{figure}
+
+\section{Formulaire de demande de warrantage}
+
+La page de demande de warrantage implémente une simulation en temps réel
+via HTMX. Lorsque l'agriculteur saisit le montant désiré, une requête HTMX
+met à jour automatiquement le bloc de simulation (montant accordé estimé,
+mensualités, coût total) sans recharger la page. Le calcul est effectué
+côté serveur pour garantir l'exactitude.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/formulaire_warrantage.png}
+\caption{Formulaire de demande de warrantage avec simulation crédit en temps réel (HTMX)}
+\label{fig:screen_warrantage}
+\end{figure}
+
+\section{Dashboard du Gestionnaire de silo}
+
+Le tableau de bord du gestionnaire centralise la surveillance de l'ensemble
+des silos sous sa responsabilité. Un système de jauges visuelles indique
+le taux de remplissage de chaque silo. Les alertes environnementales actives
+(température, humidité) sont mises en évidence avec un code couleur
+VERT/ORANGE/ROUGE correspondant au niveau de criticité.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/dashboard_gestionnaire_silo.png}
+\caption{Dashboard gestionnaire --- jauges de remplissage, alertes silo et conditions environnementales}
+\label{fig:screen_dashboard_gest}
+\end{figure}
+
+\section{Formulaire de nouveau dépôt}
+
+L'enregistrement d'un nouveau dépôt par le gestionnaire déclenche
+automatiquement le calcul de la valeur estimée (quantité $\times$ prix
+du marché actuel) et du montant warrantable (70\,\% de la valeur), et
+génère le numéro de reçu unique selon le format \texttt{GC-YYYYMM-\#\#\#\#\#}.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/formulaire_nouveau_depot.png}
+\caption{Formulaire d'enregistrement d'un nouveau dépôt par le gestionnaire de silo}
+\label{fig:screen_nouveau_depot}
+\end{figure}
+
+\section{Dashboard Administrateur \gc{}}
+
+Le tableau de bord de l'administrateur offre une vue globale de la plateforme.
+La carte Leaflet.js affiche en temps réel la localisation géographique de
+tous les silos actifs avec un indicateur coloré de leur état de santé.
+Les KPIs globaux incluent le volume total stocké, le montant total des
+warrantages actifs et les commissions perçues sur la période.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/dashboard_admin_gc.png}
+\caption{Dashboard administrateur \gc{} --- carte Leaflet des silos, KPIs globaux et alertes actives}
+\label{fig:screen_dashboard_admin}
+\end{figure}
+
+\section{Module de traduction IA}
+
+Le module de traduction offre une interface de traduction manuelle en plus
+de la traduction automatique inline disponible sur toutes les pages.
+L'historique des 5 dernières traductions est affiché pour permettre un
+accès rapide aux traductions récentes. L'indicateur du moteur utilisé
+(NLLB-200 ou Google) informe l'utilisateur sur la source de la traduction.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/module_traduction.png}
+\caption{Module de traduction IA --- formulaire quadrilingue, résultat NLLB-200 et historique}
+\label{fig:screen_traduction}
+\end{figure}
+
+\section{Catalogue acheteur}
+
+Le catalogue présente les stocks disponibles à la vente avec des filtres
+avancés (denrée, région, quantité minimale, prix maximal). Chaque card
+stock affiche les informations essentielles pour une décision d'achat :
+denrée, quantité disponible, prix au kilogramme, localisation du silo.
+Le bouton «~Faire une offre~» déclenche un formulaire modal HTMX.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/catalogue_acheteur.png}
+\caption{Catalogue acheteur avec filtres avancés et cards de stocks disponibles à la vente}
+\label{fig:screen_catalogue}
+\end{figure}
+
+\section{Dashboard IMF}
+
+Le dashboard de l'institution de microfinance priorise la gestion de la
+file d'attente des dossiers. Les dossiers sont triés par date d'arrivée
+et le score de crédit IA est affiché en bonne place pour faciliter
+l'instruction. Un système de filtres permet de trier par statut, par
+montant ou par score de crédit.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/dashboard_imf.png}
+\caption{Dashboard IMF --- file d'attente des dossiers warrantage avec scores de crédit IA}
+\label{fig:screen_dashboard_imf}
+\end{figure}
+
+\section{Widget chatbot}
+
+L'assistant conversationnel est accessible depuis n'importe quelle page
+via un bouton flottant en bas à droite de l'écran. Le panel chatbot s'ouvre
+en glissement depuis le bord droit et occupe 30\,\% de la largeur de l'écran
+sur desktop, ou plein écran sur mobile. La sélection de la langue de
+conversation est disponible en tête de panel.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/widget_chatbot.png}
+\caption{Widget chatbot --- panel ouvert avec conversation en wolof et réponse Claude Haiku}
+\label{fig:screen_chatbot}
+\end{figure}
+
+\section{Prix du marché avec recommandations IA}
+
+La page des prix du marché présente les cours actuels par denrée et région,
+avec une visualisation de l'évolution sur 4 semaines. La recommandation IA
+(VENDRE/ATTENDRE) générée par la tâche Celery hebdomadaire est mise en
+évidence avec un badge coloré et un texte explicatif en langage naturel.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/prix_marche_agriculteur.png}
+\caption{Page des prix du marché avec recommandations IA VENDRE/ATTENDRE et évolution 4 semaines}
+\label{fig:screen_prix}
+\end{figure}
+
+\section{Décision IMF sur un dossier warrantage}
+
+La page de décision IMF présente une fiche complète du dossier, incluant
+un historique des warrantages précédents de l'agriculteur pour contextualiser
+le risque. La jauge visuelle du score de crédit (0--100) facilite la lecture
+rapide du profil de risque. Le formulaire de décision valide automatiquement
+que le montant accordé est inférieur ou égal au montant warrantable.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.92\textwidth]{screenshots/decision_imf.png}
+\caption{Décision IMF --- fiche dossier complète avec score crédit IA et formulaire d'approbation/refus}
+\label{fig:screen_decision_imf}
+\end{figure}
+
+% =============================================================
+% CONCLUSION GÉNÉRALE ET PERSPECTIVES
+% =============================================================
+\chapter*{Conclusion générale et perspectives}
+\addcontentsline{toc}{chapter}{Conclusion générale et perspectives}
+
+\section*{Bilan technique}
+
+Ce projet a abouti à la conception et au déploiement complet de \gc{},
+une plateforme web Django combinant gestion de stocks agricoles, warrantage
+numérique, marchés agricoles, traduction IA multilingue et assistant
+conversationnel. Les principaux objectifs ont été atteints :
+
+\begin{itemize}
+  \item Une architecture Django en 12 applications, 47 templates, 73 fichiers
+        Python et une couverture de tests de 81\,\% a été développée et déployée
+        sur Railway en production.
+  \item Le service de traduction quadrilingue (FR, EN, WO, AR) utilisant
+        NLLB-200 avec repli Google Translate offre un temps de réponse P95
+        inférieur à 2 secondes, rendant la plateforme accessible aux locuteurs
+        wolof pour la première fois dans l'espace AgriTech sénégalais.
+  \item Le chatbot Claude Haiku avec 15 outils \emph{tool\_use} répond en langue
+        naturelle dans la langue de l'utilisateur et interroge les données réelles
+        de la plateforme, offrant une interface conversationnelle sans précédent
+        pour les agriculteurs peu familiers avec les interfaces graphiques.
+  \item Le workflow de warrantage numérique complet (7 statuts, 3 acteurs,
+        SMS automatiques) digitalise un processus qui se faisait manuellement
+        et réduit le délai de traitement estimé de 15 à 5 jours.
+\end{itemize}
+
+\section*{Limites et améliorations identifiées}
+
+\paragraph{Qualité de traduction wolof.}
+Bien que NLLB-200 soit le meilleur modèle public pour le wolof, les scores
+BLEU restent inférieurs à 25, ce qui signifie que la traduction est
+compréhensible mais pas encore de qualité professionnelle. L'intégration
+future de données d'entraînement spécifiques au vocabulaire agricole
+sénégalais améliorerait significativement ce score.
+
+\paragraph{Intégration mobile money.}
+La version actuelle trace le virement mobile money (Wave/Orange Money) dans
+la base de données mais ne l'automatise pas. L'intégration des APIs Wave
+Sénégal et Orange Money permettrait des virements automatiques déclenchés
+à la validation du dossier IMF.
+
+\paragraph{Données de prix en temps réel.}
+Les prix du marché sont actuellement saisis manuellement. L'intégration
+d'un scraper automatisé des bulletins de prix officiels (ANSD, PAPSEN)
+fournirait des données quotidiennes sans intervention humaine.
+
+\section*{Perspectives d'évolution}
+
+\paragraph{Application mobile.}
+Une application React Native ou Flutter consommant l'API DRF (déjà disponible
+avec \texttt{djangorestframework==3.15.1}) permettrait de pousser des
+notifications mobile et de fonctionner en mode hors-ligne partiel,
+crucial pour les zones rurales à connectivité intermittente.
+
+\paragraph{Modèle de prévision avancé.}
+Le remplacement de la régression linéaire par un modèle LSTM entraîné
+sur 5 ans de données de prix ANSD améliorerait la précision des
+recommandations de vente de 20 à 30\,\% selon les benchmarks de la
+littérature~\cite{cao2019lstm,ghosh2019arima}.
+
+\paragraph{Certification et régulation.}
+Pour que le warrantage opéré via \gc{} soit juridiquement opposable,
+la plateforme devra obtenir l'agrément du Ministère de l'Agriculture
+sénégalais et s'intégrer au système réglementaire OHADA des récépissés
+d'entrepôt~\cite{wfp2010warrantage}.
+
+\paragraph{Expansion géographique.}
+L'architecture multilingue et multidevise (FCFA, CFA) est conçue pour
+une expansion rapide vers d'autres pays UEMOA (Mali, Burkina Faso, Niger)
+avec un effort d'adaptation minimal : localisation des prix, des denrées
+et des opérateurs mobile money locaux.
+
+% =============================================================
+% BIBLIOGRAPHIE
+% =============================================================
+\printbibliography[heading=bibintoc, title={Bibliographie}]
+
+% =============================================================
+% ANNEXES
+% =============================================================
+\appendix
+
+\chapter{Variables d'environnement complètes}
+\label{ann:env}
+
+\begin{longtable}{L{5.5cm}L{3cm}L{5.5cm}}
+\caption{Variables d'environnement \gc{} --- référence complète}
+\label{tab:env_complet}\\
+\toprule
+\textbf{Variable} & \textbf{Type} & \textbf{Description / Exemple} \\
+\midrule
+\endfirsthead
+\multicolumn{3}{c}{\small\itshape Suite de l'annexe~\ref{ann:env}}\\
+\toprule
+\textbf{Variable} & \textbf{Type} & \textbf{Description / Exemple} \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\texttt{SECRET\_KEY}           & str  & Clé secrète Django 64 chars \\
+\texttt{DEBUG}                 & bool & \texttt{false} en production \\
+\texttt{ALLOWED\_HOSTS}        & str  & \texttt{app.railway.app,localhost} \\
+\texttt{DATABASE\_URL}         & URL  & \texttt{postgres://gc\_user:...@host/gc\_db} \\
+\texttt{REDIS\_URL}            & URL  & \texttt{redis://:password@host:6379/0} \\
+\texttt{CELERY\_BROKER\_URL}   & URL  & Même que \texttt{REDIS\_URL} \\
+\texttt{CELERY\_RESULT\_BACKEND} & URL & Même que \texttt{REDIS\_URL} \\
+\texttt{ANTHROPIC\_API\_KEY}   & str  & \texttt{sk-ant-...} \\
+\texttt{HUGGINGFACE\_API\_KEY} & str  & \texttt{hf\_...} \\
+\texttt{TWILIO\_ACCOUNT\_SID}  & str  & \texttt{ACxxxxxxxx} \\
+\texttt{TWILIO\_AUTH\_TOKEN}   & str  & Token Twilio \\
+\texttt{TWILIO\_PHONE\_NUMBER} & str  & \texttt{+1234567890} \\
+\texttt{CLOUDINARY\_URL}       & URL  & \texttt{cloudinary://key:secret@cloud} \\
+\texttt{DJANGO\_SETTINGS\_MODULE} & str & \texttt{config.settings} \\
+\texttt{TIME\_ZONE}            & str  & \texttt{Africa/Dakar} \\
+\texttt{LANGUAGE\_CODE}        & str  & \texttt{fr} \\
+\end{longtable}
+
+\chapter{Principaux endpoints de l'API REST}
+\label{ann:api}
+
+\begin{table}[H]
+\centering
+\caption{Endpoints API REST (\texttt{djangorestframework 3.15.1})}
+\label{tab:api_endpoints}
+\begin{tabular}{L{1.5cm}L{5.5cm}L{3cm}L{4cm}}
+\toprule
+\textbf{Méthode} & \textbf{URL} & \textbf{Auth.} & \textbf{Description} \\
+\midrule
+GET  & \texttt{/api/v1/depots/}              & JWT   & Liste dépôts actifs \\
+POST & \texttt{/api/v1/depots/}              & JWT   & Créer dépôt \\
+GET  & \texttt{/api/v1/depots/\{id\}/}      & JWT   & Détail dépôt \\
+GET  & \texttt{/api/v1/prix-marche/}         & JWT   & Prix par denrée/région \\
+POST & \texttt{/api/v1/warrantage/}          & JWT   & Soumettre dossier \\
+GET  & \texttt{/api/v1/warrantage/\{id\}/}  & JWT   & Statut dossier \\
+POST & \texttt{/api/v1/traduction/}          & JWT   & Traduire texte \\
+POST & \texttt{/api/v1/chatbot/}             & JWT   & Message chatbot \\
+GET  & \texttt{/api/v1/notifications/}       & JWT   & Notifications non lues \\
+GET  & \texttt{/health/}                     & Aucune & Healthcheck Railway \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\chapter{Liste des acronymes}
+\label{ann:acronymes}
+
+\begin{acronym}[NLLB-200]
+  \acro{IA}     {Intelligence Artificielle}
+  \acro{NLP}    {Natural Language Processing (Traitement Automatique du Langage)}
+  \acro{NMT}    {Neural Machine Translation (Traduction Automatique Neuronale)}
+  \acro{NLLB}   {No Language Left Behind (Meta AI, 2022)}
+  \acro{API}    {Application Programming Interface}
+  \acro{MVT}    {Model-View-Template (architecture Django)}
+  \acro{ORM}    {Object-Relational Mapping}
+  \acro{RBAC}   {Role-Based Access Control}
+  \acro{HTMX}   {HTML over the wire (bibliothèque JavaScript)}
+  \acro{IMF}    {Institution de Microfinance}
+  \acro{PaaS}   {Platform as a Service}
+  \acro{OTP}    {One-Time Password (mot de passe à usage unique)}
+  \acro{SLA}    {Service Level Agreement}
+  \acro{UEMOA}  {Union Économique et Monétaire Ouest-Africaine}
+  \acro{DAPSA}  {Direction de l'Analyse, de la Prévision et des Statistiques Agricoles}
+  \acro{FCFA}   {Franc de la Communauté Financière Africaine}
+  \acro{HSTS}   {HTTP Strict Transport Security}
+  \acro{CSP}    {Content Security Policy}
+  \acro{BLEU}   {Bilingual Evaluation Understudy (métrique NMT)}
+  \acro{LSTM}   {Long Short-Term Memory (réseau de neurones récurrent)}
+  \acro{TTL}    {Time To Live (durée de vie d'une entrée en cache)}
+  \acro{JWT}    {JSON Web Token}
+  \acro{OWASP}  {Open Web Application Security Project}
+\end{acronym}
+
+\chapter{Commandes de déploiement et maintenance}
+\label{ann:commandes}
+
+\begin{lstlisting}[style=bashstyle, caption={Commandes Railway CLI et Django management}]
+# Deploiement initial
+railway login
+railway link
+railway up
+
+# Variables d'environnement
+railway variables set SECRET_KEY="..." DEBUG=false
+
+# Base de donnees (migrations)
+railway run python manage.py migrate
+railway run python manage.py createsuperuser
+
+# Creer l'administrateur GC (commande personnalisee)
+railway run python manage.py create_admin \
+  --telephone="+221771234567" \
+  --password="SecurePass123"
+
+# Tests locaux
+pytest --cov=apps --cov-report=html -v
+
+# Traductions
+django-admin makemessages -l wo -l ar -l en
+django-admin compilemessages
+
+# Demarrage local avec Celery
+python manage.py runserver &
+celery -A config.celery worker --loglevel=info &
+celery -A config.celery beat   --loglevel=info
+\end{lstlisting}
+
+\end{document}
+
+
+
